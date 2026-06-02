@@ -1,0 +1,352 @@
+
+<?php
+
+use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use App\Models\Attendance;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+
+
+
+/*
+|--------------------------------------------------------------------------
+| VIEW
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/', function () {
+    return view('scanner');
+});
+
+Route::get('/screen_tv', function (Request $request) {
+
+    $date = $request->get('date', 'today');
+
+    // TODAY
+    if($date == 'today'){
+
+        $selectedDate = today('Asia/Kuala_Lumpur');
+
+    // YESTERDAY
+    }else if($date == 'yesterday'){
+
+        $selectedDate = today('Asia/Kuala_Lumpur')->subDay();
+
+    // CUSTOM DATE
+    }else{
+
+        $selectedDate = $date;
+
+    }
+
+    // TOTAL ATTENDANCE IKUT scan_time
+    $total = \App\Models\Attendance::whereDate(
+        'scan_time',
+        $selectedDate
+    )->count();
+
+    // LATEST ATTENDANCE IKUT scan_time
+    $latest = \App\Models\Attendance::whereDate(
+        'scan_time',
+        $selectedDate
+    )->latest('scan_time')
+    ->first();
+
+    return view('screen_tv', compact(
+        'total',
+        'latest',
+        'selectedDate'
+    ));
+
+});
+
+/*
+|--------------------------------------------------------------------------
+| QR SCAN
+|--------------------------------------------------------------------------
+*/
+
+Route::post('/scan', function (Request $request) {
+
+    // check attendance hari ini ikut scan_time
+    $todayAttendance = Attendance::where(
+        'qr_code',
+        $request->qr_code
+    )
+    ->whereDate('scan_time', today('Asia/Kuala_Lumpur'))
+    ->first();
+
+    // kalau dah scan hari ini
+    if($todayAttendance){
+
+        return response()->json([
+
+            'success' => false,
+
+            'duplicate' => true,
+
+            'message' => 'Sudah hadir hari ini',
+
+            'time' => \Carbon\Carbon::parse(
+                $todayAttendance->scan_time
+            )->format('h:i A')
+
+        ]);
+
+    }
+
+    // save attendance baru
+    Attendance::create([
+
+        'qr_code' => $request->qr_code,
+
+		'scan_time' => now('Asia/Kuala_Lumpur')
+
+    ]);
+
+    return response()->json([
+
+        'success' => true,
+
+        'message' => 'Berjaya hadir'
+
+    ]);
+
+});
+
+/*
+|--------------------------------------------------------------------------
+| DATABASE TEST
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/db-test', function () {
+
+    \DB::table('attendances')->insert([
+
+        'qr_code' => 'SERVER_TEST',
+
+        'scan_time' => now(),
+
+        'created_at' => now(),
+
+        'updated_at' => now()
+
+    ]);
+
+    return 'DATABASE CONNECTED';
+
+});
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN LOGIN
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/admin/login', function () {
+
+    return view('admin.login');
+
+});
+
+Route::post('/admin/login', function (Request $request) {
+
+    $admin = DB::table('admins')
+        ->where('username',$request->username)
+        ->where('status','active')
+        ->first();
+
+    if(
+        $admin &&
+        Hash::check(
+            $request->password,
+            $admin->password
+        )
+    ){
+
+        session([
+
+            'admin_id' => $admin->id,
+            'admin_name' => $admin->nama,
+            'admin_level' => $admin->level
+
+        ]);
+
+        return redirect('/admin/dashboard');
+
+    }
+
+    return back()
+        ->with('error','Username atau Password Salah');
+
+});
+
+Route::get('/admin/logout', function () {
+
+    session()->flush();
+
+    return redirect('/admin/login');
+
+});
+
+Route::get('/admin/dashboard', function () {
+
+    if(!session('admin_id'))
+    {
+        return redirect('/admin/login');
+    }
+
+    return view('admin.dashboard');
+
+});
+
+Route::get('/admin/live-attendance', function(){
+
+    return response()->json([
+
+        'attendanceToday' => Attendance::whereDate(
+            'scan_time',
+            today('Asia/Kuala_Lumpur')
+        )->count(),
+
+        'totalAttendance' => Attendance::count()
+
+    ]);
+
+});
+
+Route::get('/admin/user', function () {
+
+    if(!session('admin_id'))
+    {
+        return redirect('/admin/login');
+    }
+
+    if(session('admin_level') != 'superadmin')
+    {
+        abort(403);
+    }
+
+    $users = DB::table('admins')
+        ->orderBy('id','desc')
+        ->get();
+
+    return view(
+        'admin.user',
+        compact('users')
+    );
+
+});
+
+Route::get('/admin/user/create', function () {
+
+    if(!session('admin_id'))
+    {
+        return redirect('/admin/login');
+    }
+
+    if(session('admin_level') != 'superadmin')
+    {
+        abort(403);
+    }
+
+    return view('admin.user_create');
+
+});
+
+
+Route::post('/admin/user/create', function (Request $request) {
+
+    if(session('admin_level') != 'superadmin')
+    {
+        abort(403);
+    }
+
+    DB::table('admins')->insert([
+
+        'nama' => $request->nama,
+
+        'username' => $request->username,
+
+        'password' => Hash::make(
+            $request->password
+        ),
+
+        'level' => $request->level,
+
+        'status' => 'active',
+
+        'created_at' => now(),
+
+        'updated_at' => now()
+
+    ]);
+
+    return redirect('/admin/user')
+        ->with(
+            'success',
+            'User berjaya ditambah'
+        );
+
+});
+
+Route::get('/admin/user/edit/{id}', function ($id) {
+
+    if(!session('admin_id'))
+    {
+        return redirect('/admin/login');
+    }
+
+    if(session('admin_level') != 'superadmin')
+    {
+        abort(403);
+    }
+
+    $user = DB::table('admins')
+        ->where('id',$id)
+        ->first();
+
+    if(!$user)
+    {
+        abort(404);
+    }
+
+    return view(
+        'admin.user_edit',
+        compact('user')
+    );
+
+});
+
+Route::post('/admin/user/edit/{id}', function (Request $request,$id) {
+
+    if(session('admin_level') != 'superadmin')
+    {
+        abort(403);
+    }
+
+    DB::table('admins')
+    ->where('id',$id)
+    ->update([
+
+        'nama' => $request->nama,
+
+        'username' => $request->username,
+
+        'level' => $request->level,
+
+        'status' => $request->status,
+
+        'updated_at' => now()
+
+    ]);
+
+    return redirect('/admin/user')
+        ->with(
+            'success',
+            'User berjaya dikemaskini'
+        );
+
+});
