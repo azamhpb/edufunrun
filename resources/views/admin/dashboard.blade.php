@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html>
 
@@ -349,4 +348,3 @@ setInterval(loadAttendance, 1000);
 </body>
 
 </html>
-```
