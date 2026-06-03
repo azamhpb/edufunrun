@@ -596,33 +596,53 @@ Route::get('/admin/guest/create', function () {
 
 });
 
+
 Route::post('/admin/guest/create', function (Request $request) {
 
-    DB::table('guests')->insert([
+    $id = DB::table('guests')->insertGetId([
 
-            'attendance_id' => $attendanceId,
+        'nama' => $request->nama,
 
-            'nama' => $request->nama,
+        'company' => $request->company,
 
-            'company' => $request->company,
+        'class_code' => $request->class_code,
 
-            'class_code' => $request->class_code,
+        'table_no' => $request->table_no,
 
-            'table_no' => $request->table_no,
+        'qr_token' => Str::uuid(),
 
-            'qr_token' => Str::uuid(),
+        'checkin_status' => 'pending',
 
-            'checkin_status' => 'pending',
+        'created_at' => now(),
 
-            'created_at' => now(),
-
-            'updated_at' => now()
+        'updated_at' => now()
 
     ]);
 
-    return redirect('/admin/guest');
+    $attendanceId = 'GALADS-YA' . str_pad(
+        $id,
+        3,
+        '0',
+        STR_PAD_LEFT
+    );
+
+    DB::table('guests')
+        ->where('id', $id)
+        ->update([
+
+            'attendance_id' => $attendanceId
+
+        ]);
+
+    return redirect('/admin/guest')
+        ->with(
+            'success',
+            'Tetamu berjaya ditambah'
+        );
 
 });
+
+
 
 
 Route::get('/admin/guest/create', function () {
@@ -687,8 +707,120 @@ Route::post('/admin/guest/create', function (Request $request) {
 });
 
 
+
+Route::get('/admin/guest/edit/{id}', function ($id) {
+
+    if(!session('admin_id'))
+    {
+        return redirect('/admin/login');
+    }
+
+    $guest = DB::table('guests')
+        ->where('id',$id)
+        ->first();
+
+    $classes = DB::table('classes')
+        ->orderBy('class_code')
+        ->get();
+
+    return view(
+        'admin.guest_edit',
+        compact(
+            'guest',
+            'classes'
+        )
+    );
+
+});
+
+
+Route::post('/admin/guest/edit/{id}', function (
+    Request $request,
+    $id
+) {
+
+    DB::table('guests')
+        ->where('id',$id)
+        ->update([
+
+            'nama' => $request->nama,
+
+            'company' => $request->company,
+
+            'class_code' => $request->class_code,
+
+            'table_no' => $request->table_no,
+
+            'updated_at' => now()
+
+        ]);
+
+    return redirect('/admin/guest')
+        ->with(
+            'success',
+            'Tetamu berjaya dikemaskini'
+        );
+
+});
+
+Route::get('/admin/guest/delete/{id}', function ($id) {
+
+    if(!session('admin_id'))
+    {
+        return redirect('/admin/login');
+    }
+
+    DB::table('guests')
+        ->where('id',$id)
+        ->delete();
+
+    return redirect('/admin/guest')
+        ->with(
+            'success',
+            'Tetamu berjaya dipadam'
+        );
+
+});
+
+
 /*
 |--------------------------------------------------------------------------
 | GUEST MANAGEMENT
+|--------------------------------------------------------------------------
+*/
+
+
+/*
+|--------------------------------------------------------------------------
+| CARD JEMPUTAN
+|--------------------------------------------------------------------------
+*/
+
+
+
+Route::get('/card/{id}', function ($id) {
+
+    $guest = DB::table('guests')
+        ->where('qr_token',$id)
+        ->first();
+
+    if(!$guest)
+    {
+        abort(404);
+    }
+
+    return view(
+        'card',
+        compact('guest')
+    );
+
+});
+
+
+
+
+/*
+|--------------------------------------------------------------------------
+| CARD JEMPUTAN
 |--------------------------------------------------------------------------
 */

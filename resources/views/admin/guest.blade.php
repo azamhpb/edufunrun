@@ -367,7 +367,14 @@ body{
                                 Edit
 
                             </a>
+                            <a
+                            href="{{ url('admin/guest/delete/'.$guest->id) }}"
+                            class="btn btn-danger btn-sm"
+                            onclick="return confirm('Padam tetamu ini?')">
 
+                            Delete
+
+                            </a>
                             <a
                             href="{{ url('admin/card/'.$guest->id) }}"
                             class="btn btn-info btn-sm">
