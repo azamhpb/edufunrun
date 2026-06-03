@@ -528,13 +528,57 @@ Route::get('/admin/guest', function () {
         return redirect('/admin/login');
     }
 
-    $guests = DB::table('guests')
+    $search = request('search');
+    $class  = request('class');
+
+    $query = DB::table('guests');
+
+    if($search)
+    {
+        $query->where(function($q) use ($search){
+
+            $q->where('nama','like','%'.$search.'%')
+              ->orWhere('attendance_id','like','%'.$search.'%')
+              ->orWhere('company','like','%'.$search.'%');
+
+        });
+    }
+
+    if($class)
+    {
+        $query->where(
+            'class_code',
+            $class
+        );
+    }
+
+    $guests = $query
         ->orderBy('id','desc')
         ->paginate(20);
 
+    $totalGuest = DB::table('guests')->count();
+
+    $checkedIn = DB::table('guests')
+        ->where('checkin_status','checked_in')
+        ->count();
+
+    $pending = DB::table('guests')
+        ->where('checkin_status','pending')
+        ->count();
+
+    $classes = DB::table('classes')
+        ->orderBy('class_code')
+        ->get();
+
     return view(
         'admin.guest',
-        compact('guests')
+        compact(
+            'guests',
+            'totalGuest',
+            'checkedIn',
+            'pending',
+            'classes'
+        )
     );
 
 });
@@ -580,6 +624,58 @@ Route::post('/admin/guest/create', function (Request $request) {
 
 });
 
+
+Route::get('/admin/guest/create', function () {
+
+    if(!session('admin_id'))
+    {
+        return redirect('/admin/login');
+    }
+
+    $classes = DB::table('classes')
+        ->orderBy('class_code')
+        ->get();
+
+    return view(
+        'admin.guest_create',
+        compact('classes')
+    );
+
+});
+
+
+
+Route::post('/admin/guest/create', function (Request $request) {
+
+    DB::table('guests')->insert([
+
+        'attendance_id' => $request->attendance_id,
+
+        'nama' => $request->nama,
+
+        'company' => $request->company,
+
+        'class_code' => $request->class_code,
+
+        'table_no' => $request->table_no,
+
+        'qr_token' => Str::uuid(),
+
+        'checkin_status' => 'pending',
+
+        'created_at' => now(),
+
+        'updated_at' => now()
+
+    ]);
+
+    return redirect('/admin/guest')
+        ->with(
+            'success',
+            'Tetamu berjaya ditambah'
+        );
+
+});
 
 
 /*

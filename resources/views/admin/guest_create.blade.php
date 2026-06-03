@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Tambah Tetamu</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="container mt-4">
+
+    <h3>Tambah Tetamu</h3>
+
+    <hr>
+
+    <form
+    method="POST"
+    action="{{ url('admin/guest/create') }}">
+
+        @csrf
+
+        <div class="mb-3">
+
+            <label>Attendance ID</label>
+
+            <input
+            type="text"
+            name="attendance_id"
+            class="form-control"
+            required>
+
+        </div>
+
+        <div class="mb-3">
+
+            <label>Nama</label>
+
+            <input
+            type="text"
+            name="nama"
+            class="form-control"
+            required>
+
+        </div>
+
+        <div class="mb-3">
+
+            <label>Company</label>
+
+            <input
+            type="text"
+            name="company"
+            class="form-control">
+
+        </div>
+
+        <div class="mb-3">
+
+            <label>Class</label>
+
+            <select
+            name="class_code"
+            class="form-control"
+            required>
+
+                @foreach($classes as $class)
+
+                    <option value="{{ $class->class_code }}">
+
+                        {{ $class->class_code }}
+
+                    </option>
+
+                @endforeach
+
+            </select>
+
+        </div>
+
+        <div class="mb-3">
+
+            <label>No Meja</label>
+
+            <input
+            type="text"
+            name="table_no"
+            class="form-control">
+
+        </div>
+
+        <button
+        class="btn btn-success">
+
+            Simpan Tetamu
+
+        </button>
+
+        <a
+        href="{{ url('admin/guest') }}"
+        class="btn btn-secondary">
+
+            Kembali
+
+        </a>
+
+    </form>
+
+</div>
+
+</body>
+</html>
