@@ -117,6 +117,11 @@ body{
 
     </div>
 
+    <a href="{{ url('admin/guest') }}">
+    Guest Management
+    </a>
+
+
     <a href="{{ url('admin/dashboard') }}">
         
         Dashboard

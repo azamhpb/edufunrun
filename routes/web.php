@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Attendance;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Str;
 
 
 /*
@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Hash;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', function () {
+Route::get('/scanner', function () {
     return view('scanner');
 });
 
@@ -145,7 +145,23 @@ Route::get('/db-test', function () {
 |--------------------------------------------------------------------------
 */
 
+Route::get('/', function () {
+
+    if(session('admin_id'))
+    {
+        return redirect('/admin/dashboard');
+    }
+
+    return view('admin.login');
+
+});
+
 Route::get('/admin/login', function () {
+
+    if(session('admin_id'))
+    {
+        return redirect('/admin/dashboard');
+    }
 
     return view('admin.login');
 
@@ -187,7 +203,7 @@ Route::get('/admin/logout', function () {
 
     session()->flush();
 
-    return redirect('/admin/login');
+    return redirect('/');
 
 });
 
@@ -455,3 +471,119 @@ Route::get('/admin/user/delete/{id}', function ($id) {
     );
 
 });
+
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN LOGIN
+|--------------------------------------------------------------------------
+*/
+
+
+/*
+|--------------------------------------------------------------------------
+| Scanner User Interface
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/guest_scanner/{scanner_id}', function ($scanner_id) {
+
+    return view(
+        'guest_scanner',
+        compact('scanner_id')
+    );
+
+});
+
+
+Route::get('/guest_screen_tv/{scanner_id}', function ($scanner_id) {
+
+    return view(
+        'guest_screen_tv',
+        compact('scanner_id')
+    );
+
+});
+
+
+
+
+/*
+|--------------------------------------------------------------------------
+| Scanner User Interface
+|--------------------------------------------------------------------------
+*/
+
+
+
+/*
+|--------------------------------------------------------------------------
+| GUEST MANAGEMENT
+|--------------------------------------------------------------------------
+*/
+Route::get('/admin/guest', function () {
+
+    if(!session('admin_id'))
+    {
+        return redirect('/admin/login');
+    }
+
+    $guests = DB::table('guests')
+        ->orderBy('id','desc')
+        ->paginate(20);
+
+    return view(
+        'admin.guest',
+        compact('guests')
+    );
+
+});
+
+Route::get('/admin/guest/create', function () {
+
+    $classes = DB::table('classes')
+        ->orderBy('class_code')
+        ->get();
+
+    return view(
+        'admin.guest_create',
+        compact('classes')
+    );
+
+});
+
+Route::post('/admin/guest/create', function (Request $request) {
+
+    DB::table('guests')->insert([
+
+        'attendance_id' => $request->attendance_id,
+
+        'nama' => $request->nama,
+
+        'company' => $request->company,
+
+        'class_code' => $request->class_code,
+
+        'table_no' => $request->table_no,
+
+        'qr_token' => Str::uuid(),
+
+        'checkin_status' => 'pending',
+
+        'created_at' => now(),
+
+        'updated_at' => now()
+
+    ]);
+
+    return redirect('/admin/guest');
+
+});
+
+
+
+/*
+|--------------------------------------------------------------------------
+| GUEST MANAGEMENT
+|--------------------------------------------------------------------------
+*/
