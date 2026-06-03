@@ -116,6 +116,14 @@ Edit
 
 </a>
 
+<a
+href="{{ url('admin/user/reset-password/'.$user->id) }}"
+class="btn btn-info btn-sm">
+
+Reset Password
+
+</a>
+
 </td>
 
 </tr>

@@ -350,3 +350,53 @@ Route::post('/admin/user/edit/{id}', function (Request $request,$id) {
         );
 
 });
+
+Route::get('/admin/user/reset-password/{id}', function ($id) {
+
+    if(session('admin_level') != 'superadmin')
+    {
+        abort(403);
+    }
+
+    $user = DB::table('admins')
+        ->where('id',$id)
+        ->first();
+
+    if(!$user)
+    {
+        abort(404);
+    }
+
+    return view(
+        'admin.user_reset_password',
+        compact('user')
+    );
+
+});
+
+Route::post('/admin/user/reset-password/{id}', function (Request $request,$id) {
+
+    if(session('admin_level') != 'superadmin')
+    {
+        abort(403);
+    }
+
+    DB::table('admins')
+    ->where('id',$id)
+    ->update([
+
+        'password' => Hash::make(
+            $request->password
+        ),
+
+        'updated_at' => now()
+
+    ]);
+
+    return redirect('/admin/user')
+    ->with(
+        'success',
+        'Password berjaya direset'
+    );
+
+});
