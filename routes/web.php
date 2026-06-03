@@ -400,3 +400,58 @@ Route::post('/admin/user/reset-password/{id}', function (Request $request,$id) {
     );
 
 });
+
+Route::get('/admin/user/delete/{id}', function ($id) {
+
+    if(session('admin_level') != 'superadmin')
+    {
+        abort(403);
+    }
+
+    // Tak boleh delete diri sendiri
+    if(session('admin_id') == $id)
+    {
+        return back()->with(
+            'error',
+            'Tidak boleh delete akaun sendiri'
+        );
+    }
+
+    $user = DB::table('admins')
+        ->where('id',$id)
+        ->first();
+
+    if(!$user)
+    {
+        abort(404);
+    }
+
+    // Kira superadmin aktif
+    $superadminCount = DB::table('admins')
+        ->where('level','superadmin')
+        ->where('status','active')
+        ->count();
+
+    // Jangan delete superadmin terakhir
+    if(
+        $user->level == 'superadmin'
+        &&
+        $superadminCount <= 1
+    )
+    {
+        return back()->with(
+            'error',
+            'Superadmin terakhir tidak boleh dipadam'
+        );
+    }
+
+    DB::table('admins')
+        ->where('id',$id)
+        ->delete();
+
+    return back()->with(
+        'success',
+        'User berjaya dipadam'
+    );
+
+});

@@ -45,6 +45,27 @@ Tambah User
 @endif
 
 
+@if(session('success'))
+
+<div class="alert alert-success">
+
+    {{ session('success') }}
+
+</div>
+
+@endif
+
+@if(session('error'))
+
+<div class="alert alert-danger">
+
+    {{ session('error') }}
+
+</div>
+
+@endif
+
+
 <table class="table table-bordered">
 
 <thead>
@@ -121,6 +142,15 @@ href="{{ url('admin/user/reset-password/'.$user->id) }}"
 class="btn btn-info btn-sm">
 
 Reset Password
+
+</a>
+
+<a
+href="{{ url('admin/user/delete/'.$user->id) }}"
+class="btn btn-danger btn-sm"
+onclick="return confirm('Delete user ini?')">
+
+Delete
 
 </a>
 
