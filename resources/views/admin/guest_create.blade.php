@@ -25,17 +25,7 @@
 
         @csrf
 
-        <div class="mb-3">
-
-            <label>Attendance ID</label>
-
-            <input
-            type="text"
-            name="attendance_id"
-            class="form-control"
-            required>
-
-        </div>
+        
 
         <div class="mb-3">
 
@@ -71,13 +61,32 @@
 
                 @foreach($classes as $class)
 
-                    <option value="{{ $class->class_code }}">
+                        @php
+
+                            $used = DB::table('guests')
+                                ->where(
+                                    'class_code',
+                                    $class->class_code
+                                )
+                                ->count();
+
+                            $available = $class->max_pax - $used;
+
+                        @endphp
+
+                        <option
+                        value="{{ $class->class_code }}"
+                        {{ $available <= 0 ? 'disabled' : '' }}>
 
                         {{ $class->class_code }}
 
-                    </option>
+                        ({{ $available }} lagi)
 
-                @endforeach
+                        {{ $available <= 0 ? '- FULL' : '' }}
+
+                        </option>
+
+                        @endforeach
 
             </select>
 

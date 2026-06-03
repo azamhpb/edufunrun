@@ -600,23 +600,23 @@ Route::post('/admin/guest/create', function (Request $request) {
 
     DB::table('guests')->insert([
 
-        'attendance_id' => $request->attendance_id,
+            'attendance_id' => $attendanceId,
 
-        'nama' => $request->nama,
+            'nama' => $request->nama,
 
-        'company' => $request->company,
+            'company' => $request->company,
 
-        'class_code' => $request->class_code,
+            'class_code' => $request->class_code,
 
-        'table_no' => $request->table_no,
+            'table_no' => $request->table_no,
 
-        'qr_token' => Str::uuid(),
+            'qr_token' => Str::uuid(),
 
-        'checkin_status' => 'pending',
+            'checkin_status' => 'pending',
 
-        'created_at' => now(),
+            'created_at' => now(),
 
-        'updated_at' => now()
+            'updated_at' => now()
 
     ]);
 
@@ -647,9 +647,18 @@ Route::get('/admin/guest/create', function () {
 
 Route::post('/admin/guest/create', function (Request $request) {
 
+    $lastId = DB::table('guests')->max('id') + 1;
+
+    $attendanceId = 'GALADS-YA' . str_pad(
+        $lastId,
+        3,
+        '0',
+        STR_PAD_LEFT
+    );
+
     DB::table('guests')->insert([
 
-        'attendance_id' => $request->attendance_id,
+        'attendance_id' => $attendanceId,
 
         'nama' => $request->nama,
 
