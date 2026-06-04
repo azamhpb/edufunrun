@@ -1,6 +1,6 @@
 @php
 
-
+$badgeClass = 'blank';
 
 if(str_starts_with($guest->class_code,'DIAMOND'))
 {
@@ -64,9 +64,11 @@ elseif(str_starts_with($guest->class_code,'SILVER'))
 
     background:linear-gradient(
         135deg,
-        #f7d36b,
-        #9c5f00,
-        #f8c867
+        #e7aa51,
+        #ffe499,
+        #8d5a1b,
+        #e7aa51,
+        #ac7031
     );
 
 }
@@ -77,9 +79,11 @@ elseif(str_starts_with($guest->class_code,'SILVER'))
 
     background:linear-gradient(
         135deg,
-        #f0eef5,
-        #9a9aa0,
-        #d7d7dc
+        #858489,
+        #e7e4ef,
+        #858489,
+        #b9b9b9,
+        #858489
     );
 
 }
@@ -90,9 +94,11 @@ elseif(str_starts_with($guest->class_code,'SILVER'))
 
     background:linear-gradient(
         135deg,
-        #d8c0a0,
-        #8f6d42,
-        #c9aa7d
+        #785c3a,
+        #e2c29a,
+        #785c3a,
+        #ac8e68,
+        #785c3a
     );
 
 }
@@ -103,8 +109,28 @@ elseif(str_starts_with($guest->class_code,'SILVER'))
 
     background:linear-gradient(
         135deg,
-        #6dd6ff,
-        #0056b3
+        #013e6a,
+        #43d1ff,
+        #013e6a,
+        #419ad6,
+        #01186a
+    );
+
+}
+
+
+
+.blank{
+
+    color:#fff;
+
+    background:linear-gradient(
+        135deg,
+        #000000,
+        #000000,
+        #013e6a,
+        #419ad6,
+        #01186a
     );
 
 }
@@ -152,7 +178,8 @@ body{
 
     font-weight:bold;
 
-    color:#111;
+    
+    
 
 }
 
@@ -170,7 +197,7 @@ body{
 
     font-size:24px;
 
-    color:#111;
+    
 
 }
 
@@ -190,7 +217,27 @@ body{
 
     font-weight:bold;
 
-    color:#111;
+    
+
+}
+
+.table_no_without_company{
+
+    position:absolute;
+
+    top:1096px;
+
+    left:342px;
+
+    width:400px;
+
+    text-align:center;
+
+    font-size:26px;
+
+    font-weight:bold;
+
+    
 
 }
 
@@ -213,7 +260,7 @@ body{
 <div class="card-container">
 
     <img
-    src="{{ asset('card-template.png') }}"
+    src="{{ asset('Makan-Malam-Gala-Sabah-2026.png') }}"
     class="card-bg">
 
     <div class="category {{ $badgeClass }} nama">
@@ -221,6 +268,7 @@ body{
         {{ $guest->nama }}
 
     </div>
+@if(!empty($guest->company))
 
     <div class="category {{ $badgeClass }} company">
 
@@ -228,6 +276,7 @@ body{
 
     </div>
 
+    
     <div class="category {{ $badgeClass }} table_no">
 
         {{ $guest->class_code }}
@@ -238,10 +287,34 @@ body{
 
     </div>
 
+@else
+
+
+    <div class="category {{ $badgeClass }} table_no_without_company">
+
+        {{ $guest->class_code }}
+
+        @if($guest->table_no)
+
+        &nbsp; | &nbsp;
+
+        MEJA {{ $guest->table_no }}
+
+        @endif
+
+    </div>
+
+@endif
+
     <div class="qr">
 
-      
-<img src="https://api.qrserver.com/v1/create-qr-code/?size=175x175&data={{ urlencode($guest->attendance_id) }}" alt="QR Code">
+        <img
+        src="{{ url('guest-qr/'.$guest->id) }}"
+        width="175"
+        height="175" alt="QR Code">
+
+
+        
 
     </div>
 

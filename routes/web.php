@@ -8,12 +8,18 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
+use Endroid\QrCode\Builder\Builder;
+
+
 
 /*
 |--------------------------------------------------------------------------
 | VIEW
 |--------------------------------------------------------------------------
 */
+
+
+
 
 Route::get('/scanner', function () {
     return view('scanner');
@@ -117,7 +123,7 @@ Route::post('/scan', function (Request $request) {
 
 /*
 |--------------------------------------------------------------------------
-| DATABASE TEST
+| TEST ROUTES
 |--------------------------------------------------------------------------
 */
 
@@ -138,6 +144,24 @@ Route::get('/db-test', function () {
     return 'DATABASE CONNECTED';
 
 });
+
+Route::get('/qr-test', function () {
+
+    $result = Builder::create()
+        ->data('HELLO GALA SABAH')
+        ->size(300)
+        ->build();
+
+    return response(
+        $result->getString(),
+        200,
+        [
+            'Content-Type' => 'image/png'
+        ]
+    );
+
+});
+
 
 /*
 |--------------------------------------------------------------------------
@@ -817,7 +841,31 @@ Route::get('/card/{id}', function ($id) {
 });
 
 
+Route::get('/guest-qr/{id}', function ($id) {
 
+    $guest = DB::table('guests')
+        ->where('id', $id)
+        ->first();
+
+    if(!$guest)
+    {
+        abort(404);
+    }
+
+    $result = Builder::create()
+        ->data($guest->qr_token)
+        ->size(175)
+        ->build();
+
+    return response(
+        $result->getString(),
+        200,
+        [
+            'Content-Type' => 'image/png'
+        ]
+    );
+
+});
 
 /*
 |--------------------------------------------------------------------------
