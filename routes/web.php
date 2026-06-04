@@ -623,12 +623,14 @@ Route::get('/admin/guest/create', function () {
 
 Route::post('/admin/guest/create', function (Request $request) {
 
+
+
     $id = DB::table('guests')->insertGetId([
 
         'nama' => $request->nama,
 
         'company' => $request->company,
-        
+
         'phone_no' => $request->phone_no,
 
         'class_code' => $request->class_code,
@@ -710,6 +712,8 @@ Route::post('/admin/guest/create', function (Request $request) {
 
         'company' => $request->company,
 
+        'phone_no' => $request->phone_no,
+
         'class_code' => $request->class_code,
 
         'table_no' => $request->table_no,
@@ -772,6 +776,8 @@ Route::post('/admin/guest/edit/{id}', function (
             'nama' => $request->nama,
 
             'company' => $request->company,
+
+            'phone_no' => $request->phone_no,
 
             'class_code' => $request->class_code,
 
