@@ -628,6 +628,8 @@ Route::post('/admin/guest/create', function (Request $request) {
         'nama' => $request->nama,
 
         'company' => $request->company,
+        
+        'phone_no' => $request->phone_no,
 
         'class_code' => $request->class_code,
 

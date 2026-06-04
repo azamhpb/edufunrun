@@ -63,9 +63,31 @@ value="{{ $guest->company }}">
 
 </div>
 
+
+<div class="mb-3">
+
+    <label>No Telefon</label>
+
+    <input
+    type="text"
+    name="phone_no"
+    class="form-control"
+    value="{{ $guest->phone_no }}">
+
+</div>
+
+
 <div class="mb-3">
 
 <label>Class</label>
+<div class="alert alert-info">
+
+Class Semasa:
+
+<b>{{ $guest->class_code }}</b>
+
+</div>
+
 
 <select
 name="class_code"
@@ -73,11 +95,36 @@ class="form-control">
 
 @foreach($classes as $class)
 
+@php
+
+    $used = DB::table('guests')
+        ->where(
+            'class_code',
+            $class->class_code
+        )
+        ->where(
+            'id',
+            '!=',
+            $guest->id
+        )
+        ->count();
+
+    $available = $class->max_pax - $used;
+
+@endphp
+
 <option
 value="{{ $class->class_code }}"
-{{ $guest->class_code==$class->class_code ? 'selected' : '' }}>
+
+{{ $guest->class_code == $class->class_code ? 'selected' : '' }}
+
+{{ $available <= 0 && $guest->class_code != $class->class_code ? 'disabled' : '' }}>
 
 {{ $class->class_code }}
+
+({{ $available }} lagi)
+
+{{ $available <= 0 ? '- FULL' : '' }}
 
 </option>
 

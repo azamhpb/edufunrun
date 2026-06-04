@@ -309,6 +309,7 @@ body{
                         <th>Attendance ID</th>
                         <th>Nama</th>
                         <th>Company</th>
+                        <th>No Telefon</th>
                         <th>Class</th>
                         <th>Meja</th>
                         <th>Status</th>
@@ -331,6 +332,8 @@ body{
                         <td>{{ $guest->nama }}</td>
 
                         <td>{{ $guest->company }}</td>
+
+                        <td>{{ $guest->phone_no }}</td>
 
                         <td>{{ $guest->class_code }}</td>
 
@@ -375,13 +378,34 @@ body{
                             Delete
 
                             </a>
-                            <a
-                            href="{{ url('admin/card/'.$guest->id) }}"
-                            class="btn btn-info btn-sm">
+                            <a href="{{ url('card/'.$guest->qr_token) }}"
+                            target="_blank"
+                            class="btn btn-primary btn-sm">
 
                                 Card
 
                             </a>
+                            @php
+
+                                $message =
+                                "Assalamualaikum dan Salam Sejahtera.\n\n".
+                                "Jemputan *Majlis Makan Malam Gala Sabah 2026*.\n\n".
+                                "Nama*: ".$guest->nama."*\n".
+                                "Kategori_: ".$guest->class_code."_\n".
+                                "Meja: _".$guest->table_no."_\n\n".
+                                "Kad Jemputan:\n".
+                                url('card/'.$guest->qr_token);
+
+                                @endphp
+
+                                <a
+                                href="https://wa.me/6{{ $guest->phone_no }}?&text={{ urlencode($message) }}"
+                                target="_blank"
+                                class="btn btn-success btn-sm">
+
+                                WhatsApp
+
+                                </a>
 
                         </td>
 

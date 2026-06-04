@@ -52,6 +52,17 @@
 
         <div class="mb-3">
 
+            <label>No Telefon</label>
+
+            <input
+            type="text"
+            name="phone_no"
+            class="form-control">
+
+        </div>
+
+        <div class="mb-3">
+
             <label>Class</label>
 
             <select
