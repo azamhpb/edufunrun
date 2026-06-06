@@ -224,7 +224,7 @@ Route::get('/admin/dashboard', function () {
 
     if(!session('admin_id'))
     {
-        return redirect('/admin/login');
+        return redirect('/');
     }
 
     return view('admin.dashboard');
@@ -295,7 +295,7 @@ Route::get('/admin/user', function () {
 
     if(!session('admin_id'))
     {
-        return redirect('/admin/login');
+        return redirect('/');
     }
 
     if(session('admin_level') != 'superadmin')
@@ -318,7 +318,7 @@ Route::get('/admin/user/create', function () {
 
     if(!session('admin_id'))
     {
-        return redirect('/admin/login');
+        return redirect('/');
     }
 
     if(session('admin_level') != 'superadmin')
@@ -370,7 +370,7 @@ Route::get('/admin/user/edit/{id}', function ($id) {
 
     if(!session('admin_id'))
     {
-        return redirect('/admin/login');
+        return redirect('/');
     }
 
     if(session('admin_level') != 'superadmin')
@@ -859,7 +859,7 @@ Route::get('/admin/guest', function () {
 
     if(!session('admin_id'))
     {
-        return redirect('/admin/login');
+        return redirect('/');
     }
 
     $search = request('search');
@@ -997,7 +997,7 @@ Route::get('/admin/guest/create', function () {
 
     if(!session('admin_id'))
     {
-        return redirect('/admin/login');
+        return redirect('/');
     }
 
     $classes = DB::table('classes')
@@ -1095,7 +1095,7 @@ Route::get('/admin/guest/edit/{id}', function ($id) {
 
     if(!session('admin_id'))
     {
-        return redirect('/admin/login');
+        return redirect('/');
     }
 
     $guest = DB::table('guests')
@@ -1152,7 +1152,7 @@ Route::get('/admin/guest/delete/{id}', function ($id) {
 
     if(!session('admin_id'))
     {
-        return redirect('/admin/login');
+        return redirect('/');
     }
 
     DB::table('guests')
@@ -1300,7 +1300,7 @@ Route::get('/admin/attendance-management', function () {
 
     if(!session('admin_id'))
     {
-        return redirect('/admin/login');
+        return redirect('/');
     }
 
     $attendance = DB::table('guest_attendance')
@@ -1367,7 +1367,7 @@ Route::post('/admin/attendance/undo/{id}', function ($id) {
 
     if(!session('admin_id'))
     {
-        return redirect('/admin/login');
+        return redirect('/');
     }
 
     $attendance = DB::table('guest_attendance')
@@ -1426,7 +1426,7 @@ Route::get('/admin/attendance-undo-logs', function () {
 
     if(!session('admin_id'))
     {
-        return redirect('/admin/login');
+        return redirect('/');
     }
 
     $logs = DB::table('attendance_undo_logs')
