@@ -27,7 +27,7 @@ elseif(str_starts_with($guest->class_code,'SILVER'))
 <head>
 
 <meta charset="UTF-8">
-
+<link rel="icon" type="image/png" href="https://yayasanangkasa.coop/images/logo%20yayasan%20angkasa%202018%201to1.png">
 <title>{{ $guest->nama }}</title>
 
 <style>
