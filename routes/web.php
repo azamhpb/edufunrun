@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-use Endroid\QrCode\Builder\Builder;
+
 
 
 
@@ -145,22 +145,8 @@ Route::get('/db-test', function () {
 
 });
 
-Route::get('/qr-test', function () {
 
-    $result = Builder::create()
-        ->data('HELLO GALA SABAH')
-        ->size(300)
-        ->build();
 
-    return response(
-        $result->getString(),
-        200,
-        [
-            'Content-Type' => 'image/png'
-        ]
-    );
-
-});
 
 
 /*
@@ -849,7 +835,7 @@ Route::get('/card/{id}', function ($id) {
 });
 
 
-Route::get('/guest-qr/{id}', function ($id) {
+Route::get('/qr-guest/{id}', function ($id) {
 
     $guest = DB::table('guests')
         ->where('id', $id)
@@ -860,17 +846,9 @@ Route::get('/guest-qr/{id}', function ($id) {
         abort(404);
     }
 
-    $result = Builder::create()
-        ->data($guest->qr_token)
-        ->size(175)
-        ->build();
-
-    return response(
-        $result->getString(),
-        200,
-        [
-            'Content-Type' => 'image/png'
-        ]
+    return redirect(
+        'https://api.qrserver.com/v1/create-qr-code/?size=175x175&data='
+        . urlencode($guest->qr_token)
     );
 
 });

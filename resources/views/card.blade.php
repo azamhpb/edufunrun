@@ -309,7 +309,7 @@ body{
     <div class="qr">
 
         <img
-        src="{{ url('guest-qr/'.$guest->id) }}"
+       src="{{ url('qr-guest/'.$guest->id) }}"
         width="175"
         height="175" alt="QR Code">
 
