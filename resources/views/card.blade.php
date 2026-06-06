@@ -28,7 +28,7 @@ elseif(str_starts_with($guest->class_code,'SILVER'))
 
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="https://yayasanangkasa.coop/images/logo%20yayasan%20angkasa%202018%201to1.png">
-<title>{{ $guest->nama }}</title>
+<title>{{ $guest->nama }} | Kad Jemputan Gala Dinner Sabah 2026 Yayasan ANGKASA</title>
 
 <style>
 
