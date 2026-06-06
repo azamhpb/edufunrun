@@ -1048,6 +1048,39 @@ Route::post('/admin/guest/create', function (Request $request) {
 
     ]);
 
+    // Dapatkan QR Token untuk dihantar dalam SMS
+    $phone = preg_replace('/[^0-9]/', '', $request->phone_no);
+
+        $message =
+        "Assalamualaikum dan Salam Sejahtera.\n\n".
+        "Jemputan Majlis Makan Malam Gala Dinner Sabah 2026.\n\n".
+        "Nama: ".$request->nama."\n".
+        "Kategori: ".$request->class_code."\n".
+        "Meja: ".$request->table_no."\n\n".
+        "Kad Jemputan akan dihantar oleh Admin Yayasan ANGKASA melalui WhatsApp.\n\n";
+        //"Waktu Create Guest:\n".
+        //now('Asia/Kuala_Lumpur')->format('d/m/Y h:i A');
+
+        $api_url =
+        "http://cloudsms.trio-mobile.com/index.php/api/bulk_mt?".
+        http_build_query([
+
+            'api_key'      => 'e998433bf9918a7ea56479af11b106e43d587294e573741ed1b318163a6610e6',
+            'action'       => 'send',
+            'to'           => '6'.$phone,
+            'msg'          => $message,
+            'sender_id'    => 'CLOUDSMS',
+            'content_type' => '1',
+            'mode'         => 'shortcode',
+            'campaign'     => 'GALASABAH2026'
+
+        ]);
+
+        $response = @file_get_contents($api_url);
+
+        // Dapatkan QR Token untuk dihantar dalam SMS
+
+
     return redirect('/admin/guest')
         ->with(
             'success',
@@ -1130,6 +1163,68 @@ Route::get('/admin/guest/delete/{id}', function ($id) {
         ->with(
             'success',
             'Tetamu berjaya dipadam'
+        );
+
+});
+
+
+Route::get('/admin/guest/sms/{id}', function ($id) {
+
+    if(!session('admin_id'))
+    {
+        return redirect('/');
+    }
+
+    $guest = DB::table('guests')
+        ->where('id',$id)
+        ->first();
+
+    if(!$guest)
+    {
+        return redirect('/admin/guest')
+            ->with(
+                'error',
+                'Tetamu tidak dijumpai'
+            );
+    }
+
+    $phone = preg_replace(
+        '/[^0-9]/',
+        '',
+        $guest->phone_no
+    );
+
+    $message =
+    "Assalamualaikum dan Salam Sejahtera.\n\n".
+    "Jemputan Majlis Makan Malam Gala Dinner Sabah 2026.\n\n".
+    "Nama: ".$guest->nama."\n".
+    "Kategori: ".$guest->class_code."\n".
+    "Meja: ".$guest->table_no."\n\n".
+    "Kad Jemputan akan dihantar oleh Admin Yayasan ANGKASA melalui WhatsApp.\n\n";
+    //"Waktu Create Guest:\n".
+    //now('Asia/Kuala_Lumpur')->format('d/m/Y h:i A');
+
+    $api_url =
+    "http://cloudsms.trio-mobile.com/index.php/api/bulk_mt?".
+    http_build_query([
+
+        'api_key' =>
+        'e998433bf9918a7ea56479af11b106e43d587294e573741ed1b318163a6610e6',
+        'action' => 'send',
+        'to' => '6'.$phone,
+        'msg' => $message,
+        'sender_id' => 'CLOUDSMS',
+        'content_type' => '1',
+        'mode' => 'shortcode',
+        'campaign' => 'GALASABAH2026'
+    ]);
+
+    $response = @file_get_contents($api_url);
+
+    return redirect('/admin/guest')
+        ->with(
+            'success',
+            'SMS berjaya dihantar kepada '.$guest->nama
         );
 
 });

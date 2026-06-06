@@ -516,6 +516,15 @@ body{
 
                                 </a>
 
+                                <a
+                                href="{{ url('admin/guest/sms/'.$guest->id) }}"
+                                class="btn btn-info btn-sm"
+                                onclick="return confirm('Hantar SMS kepada tetamu ini?')">
+
+                                SMS
+
+                                </a>
+
                         </td>
 
                     </tr>
