@@ -15,7 +15,7 @@ body{
 
     background:
     linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
-    url('https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1974');
+    url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=1920');
 
     display:flex;
 

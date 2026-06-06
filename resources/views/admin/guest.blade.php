@@ -99,7 +99,7 @@ body{
 .sidebar{
 
     width:250px;
-    min-height:100vh;
+    height:100vh;
 
     background:#212529;
 
@@ -107,6 +107,36 @@ body{
 
     left:0;
     top:0;
+
+    overflow-y:auto;
+
+    overflow-x:hidden;
+
+}
+
+.sidebar::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+.sidebar::-webkit-scrollbar-track{
+
+    background:#212529;
+
+}
+
+.sidebar::-webkit-scrollbar-thumb{
+
+    background:#495057;
+
+    border-radius:10px;
+
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover{
+
+    background:#6c757d;
 
 }
 
@@ -121,6 +151,9 @@ body{
     padding:20px;
 
     border-bottom:1px solid rgba(255,255,255,.1);
+    background:
+    linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
+    url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=1920');
 
 }
 
