@@ -1,59 +1,206 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+    <img src="https://yayasanangkasa.coop/images/logo%20yayasan%20angkasa%202018%201to1.png" width="180">
 </p>
 
-## About Laravel
+<h1 align="center">
+    Gala Dinner Sabah 2026
+</h1>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+<h3 align="center">
+    QR Attendance & Guest Management System
+</h3>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+<p align="center">
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+```
+<img src="https://img.shields.io/badge/Laravel-12-red">
 
-## Learning Laravel
+<img src="https://img.shields.io/badge/PHP-8.2-blue">
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+<img src="https://img.shields.io/badge/Bootstrap-5-purple">
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+<img src="https://img.shields.io/badge/MySQL-Database-orange">
+```
 
-## Laravel Sponsors
+</p>
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+<hr>
 
-### Premium Partners
+<h2>📌 Project Overview</h2>
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+<p>
+Gala Dinner Sabah 2026 QR Attendance System is a Laravel-based guest management
+and attendance tracking platform developed for Yayasan ANGKASA.
+</p>
 
-## Contributing
+<p>
+The system provides QR invitation cards, real-time attendance monitoring,
+multiple scanner stations, TV display screens, attendance management,
+attendance undo functionality and reporting tools.
+</p>
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+<hr>
 
-## Code of Conduct
+<h2>🚀 Features</h2>
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+<ul>
 
-## Security Vulnerabilities
+<li>Guest Management</li>
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+<li>QR Invitation Card</li>
 
-## License
+<li>WhatsApp Invitation Sharing</li>
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+<li>Attendance Management</li>
+
+<li>Attendance Undo Logs</li>
+
+<li>Multi Scanner Stations</li>
+
+<li>Duplicate Scan Detection</li>
+
+<li>Welcome TV Display</li>
+
+<li>Dashboard TV Display</li>
+
+<li>User Management</li>
+
+<li>Real-Time Dashboard</li>
+
+<li>Live Attendance Monitoring</li>
+
+</ul>
+
+<hr>
+
+<h2>📊 System Modules</h2>
+
+<table>
+
+<tr>
+
+<th>Module</th>
+
+<th>URL</th>
+
+</tr>
+
+<tr>
+
+<td>Dashboard</td>
+
+<td>/admin/dashboard</td>
+
+</tr>
+
+<tr>
+
+<td>Guest Management</td>
+
+<td>/admin/guest</td>
+
+</tr>
+
+<tr>
+
+<td>User Management</td>
+
+<td>/admin/user</td>
+
+</tr>
+
+<tr>
+
+<td>Attendance Management</td>
+
+<td>/admin/attendance-management</td>
+
+</tr>
+
+<tr>
+
+<td>Attendance Undo Logs</td>
+
+<td>/admin/attendance-undo-logs</td>
+
+</tr>
+
+<tr>
+
+<td>Scanner Station</td>
+
+<td>/guest_scanner/{id}</td>
+
+</tr>
+
+<tr>
+
+<td>Welcome TV</td>
+
+<td>/guest_screen_tv/{id}</td>
+
+</tr>
+
+<tr>
+
+<td>Dashboard TV</td>
+
+<td>/guest_dashboard_tv</td>
+
+</tr>
+
+</table>
+
+<hr>
+
+<h2>🗄 Database</h2>
+
+<pre>
+DB_DATABASE=makanmalamsabah_2026
+</pre>
+
+<hr>
+
+<h2>🛠 Technology Stack</h2>
+
+<ul>
+
+<li>Laravel 12</li>
+
+<li>PHP 8.2</li>
+
+<li>MySQL</li>
+
+<li>Bootstrap 5</li>
+
+<li>HTML5 QR Code Scanner</li>
+
+<li>GitHub Version Control</li>
+
+</ul>
+
+<hr>
+
+<h2>🏢 Developed For</h2>
+
+<p>
+
+<b>Yayasan ANGKASA</b>
+
+<br>
+
+Gala Dinner Sabah 2026
+
+</p>
+
+<hr>
+
+<p align="center">
+
+Copyright © 2026
+
+<br>
+
+Yayasan ANGKASA
+
+</p>
