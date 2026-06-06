@@ -2,7 +2,7 @@
 
     <div class="logo">
 
-        <div align="center">
+        <div align="center" style="backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.15);border-radius:30px;padding:5px;box-shadow:0 10px 40px rgba(0,0,0,0.4);">
         <img src="https://yayasanangkasa.coop/images/logo%20yayasan%20angkasa%202018%201to1.png" width="100px" height="100px" alt="Logo">
         </div>
         <div align="center">

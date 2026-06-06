@@ -259,7 +259,7 @@ body{
     top:1285px;
 
 
-        backdrop-filter:blur(10px);
+    backdrop-filter:blur(10px);
     border:1px solid rgba(255,255,255,0.15);
 
     border-radius:25px;
