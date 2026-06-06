@@ -150,6 +150,15 @@ body{
 
     width:1080px;
 
+    backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,0.15);
+
+    border-radius:30px;
+
+    padding:20px;
+
+    box-shadow:0 10px 40px rgba(0,0,0,0.4);
+
     margin:auto;
 
 }

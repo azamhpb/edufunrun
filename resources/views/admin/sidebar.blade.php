@@ -2,9 +2,12 @@
 
     <div class="logo">
 
+        <div align="center">
+        <img src="https://yayasanangkasa.coop/images/logo%20yayasan%20angkasa%202018%201to1.png" width="100px" height="100px" alt="Logo">
+        </div>
+        <div align="center">
         Gala Dinner Sabah 2026
-        Yayasan ANGKASA
-
+        </div>
     </div>
 
     <a href="{{ url('admin/dashboard') }}">
