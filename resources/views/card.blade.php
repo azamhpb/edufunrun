@@ -56,6 +56,8 @@ elseif(str_starts_with($guest->class_code,'SILVER'))
 
     font-weight:bold;
 
+    
+
 }
 
 .diamond{
@@ -187,6 +189,7 @@ body{
 
     font-weight:bold;
 
+    
     
     
 
