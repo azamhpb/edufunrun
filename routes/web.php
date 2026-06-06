@@ -12,6 +12,9 @@ use Illuminate\Support\Str;
 
 
 
+
+
+
 /*
 |--------------------------------------------------------------------------
 | VIEW
@@ -133,11 +136,11 @@ Route::get('/db-test', function () {
 
         'qr_code' => 'SERVER_TEST',
 
-        'scan_time' => now(),
+        'scan_time' => now('Asia/Kuala_Lumpur'),
 
-        'created_at' => now(),
+        'created_at' => now('Asia/Kuala_Lumpur'),
 
-        'updated_at' => now()
+        'updated_at' => now('Asia/Kuala_Lumpur')
 
     ]);
 
@@ -230,14 +233,59 @@ Route::get('/admin/dashboard', function () {
 
 Route::get('/admin/live-attendance', function(){
 
+    $totalGuest = DB::table('guests')
+        ->count();
+
+    $attendanceToday = DB::table('guest_attendance')
+        ->distinct('guest_id')
+        ->count();
+
+    $notCheckedIn =
+        $totalGuest -
+        $attendanceToday;
+
+    $latestAttendance = DB::table('guest_attendance')
+        ->orderByDesc('id')
+        ->first();
+
+    $latest = null;
+
+    if($latestAttendance)
+    {
+
+        $guest = DB::table('guests')
+            ->where(
+                'id',
+                $latestAttendance->guest_id
+            )
+            ->first();
+
+        if($guest)
+        {
+
+            $latest = [
+
+                'nama' => $guest->nama,
+
+                'class_code' => $guest->class_code,
+
+                'table_no' => $guest->table_no
+
+            ];
+
+        }
+
+    }
+
     return response()->json([
 
-        'attendanceToday' => Attendance::whereDate(
-            'scan_time',
-            today('Asia/Kuala_Lumpur')
-        )->count(),
+        'attendanceToday' => $attendanceToday,
 
-        'totalAttendance' => Attendance::count()
+        'totalAttendance' => $notCheckedIn,
+
+        'totalGuest' => $totalGuest,
+
+        'latest' => $latest
 
     ]);
 
@@ -304,9 +352,9 @@ Route::post('/admin/user/create', function (Request $request) {
 
         'status' => 'active',
 
-        'created_at' => now(),
+        'created_at' => now('Asia/Kuala_Lumpur'),
 
-        'updated_at' => now()
+        'updated_at' => now('Asia/Kuala_Lumpur')
 
     ]);
 
@@ -365,7 +413,7 @@ Route::post('/admin/user/edit/{id}', function (Request $request,$id) {
 
         'status' => $request->status,
 
-        'updated_at' => now()
+        'updated_at' => now('Asia/Kuala_Lumpur')
 
     ]);
 
@@ -415,7 +463,7 @@ Route::post('/admin/user/reset-password/{id}', function (Request $request,$id) {
             $request->password
         ),
 
-        'updated_at' => now()
+        'updated_at' => now('Asia/Kuala_Lumpur')
 
     ]);
 
@@ -496,12 +544,180 @@ Route::get('/admin/user/delete/{id}', function ($id) {
 |--------------------------------------------------------------------------
 */
 
+
+
 Route::get('/guest_scanner/{scanner_id}', function ($scanner_id) {
 
     return view(
         'guest_scanner',
         compact('scanner_id')
     );
+
+});
+
+Route::post('/guest-scan/{scanner_id}', function (
+    Request $request,
+    $scanner_id
+) {
+
+    $guest = DB::table('guests')
+        ->where(
+            'qr_token',
+            $request->qr_code
+        )
+        ->first();
+
+    if(!$guest)
+    {
+
+        DB::table('scan_logs')->insert([
+
+            'guest_id' => 0,
+
+            'scanner_id' => $scanner_id,
+
+            'qr_token' => $request->qr_code,
+
+            'scan_result' => 'INVALID',
+
+            'scan_time' => now('Asia/Kuala_Lumpur'),
+
+            'created_at' => now('Asia/Kuala_Lumpur'),
+
+            'updated_at' => now('Asia/Kuala_Lumpur')
+
+        ]);
+
+        return response()->json([
+
+            'success' => false,
+
+            'message' => 'QR Tidak Sah'
+
+        ]);
+
+    }
+
+    $already = DB::table('guest_attendance')
+        ->where(
+            'guest_id',
+            $guest->id
+        )
+        ->exists();
+
+    if($already)
+{
+
+    $lastScan = DB::table('guest_attendance')
+        ->where(
+            'guest_id',
+            $guest->id
+        )
+        ->orderByDesc('id')
+        ->first();
+
+    DB::table('scan_logs')->insert([
+
+        'guest_id' => $guest->id,
+
+        'scanner_id' => $scanner_id,
+
+        'qr_token' => $guest->qr_token,
+
+        'scan_result' => 'DUPLICATE',
+
+        'scan_time' => now('Asia/Kuala_Lumpur'),
+
+        'created_at' => now('Asia/Kuala_Lumpur'),
+
+        'updated_at' => now('Asia/Kuala_Lumpur')
+
+    ]);
+
+    return response()->json([
+
+        'success' => false,
+
+        'duplicate' => true,
+
+        'message' => 'Sudah Check In',
+
+        'nama' => $guest->nama,
+
+        'company' => $guest->company,
+
+        'class_code' => $guest->class_code,
+
+        'table_no' => $guest->table_no,
+
+        'scanner_id' => $lastScan->scanner_id,
+
+        'scan_time' => date(
+            'd/m/Y h:i:s A',
+            strtotime($lastScan->scan_time)
+        )
+
+    ]);
+
+}
+
+    DB::table('guest_attendance')->insert([
+
+        'guest_id' => $guest->id,
+
+        'scanner_id' => $scanner_id,
+
+        'scan_time' => now('Asia/Kuala_Lumpur'),
+
+        'created_at' => now('Asia/Kuala_Lumpur'),
+
+        'updated_at' => now('Asia/Kuala_Lumpur')
+
+    ]);
+
+    DB::table('guests')
+        ->where('id',$guest->id)
+        ->update([
+
+            'checkin_status' => 'checked_in',
+
+            'checkin_time' => now('Asia/Kuala_Lumpur'),
+
+            'updated_at' => now('Asia/Kuala_Lumpur')
+
+        ]);
+
+    DB::table('scan_logs')->insert([
+
+        'guest_id' => $guest->id,
+
+        'scanner_id' => $scanner_id,
+
+        'qr_token' => $guest->qr_token,
+
+        'scan_result' => 'SUCCESS',
+
+        'scan_time' => now('Asia/Kuala_Lumpur'),
+
+        'created_at' => now('Asia/Kuala_Lumpur'),
+
+        'updated_at' => now('Asia/Kuala_Lumpur')
+
+    ]);
+
+    return response()->json([
+
+        'success' => true,
+
+        'nama' => $guest->nama,
+
+        'company' => $guest->company,
+
+        'class_code' => $guest->class_code,
+
+        'table_no' => $guest->table_no
+
+    ]);
 
 });
 
@@ -515,6 +731,114 @@ Route::get('/guest_screen_tv/{scanner_id}', function ($scanner_id) {
 
 });
 
+Route::get('/guest-tv-data/{scanner_id}', function ($scanner_id) {
+
+    $attendance = DB::table('guest_attendance')
+        ->where(
+            'scanner_id',
+            $scanner_id
+        )
+        ->orderByDesc('id')
+        ->first();
+
+    if(!$attendance)
+    {
+        return response()->json([
+            'success' => false
+        ]);
+    }
+
+    $guest = DB::table('guests')
+        ->where(
+            'id',
+            $attendance->guest_id
+        )
+        ->first();
+
+    if(!$guest)
+    {
+        return response()->json([
+            'success' => false
+        ]);
+    }
+
+    return response()->json([
+
+        'success' => true,
+
+        'attendance_id' => $attendance->id,
+
+        'nama' => $guest->nama,
+
+        'company' => $guest->company,
+
+        'class_code' => $guest->class_code,
+
+        'table_no' => $guest->table_no
+
+    ]);
+
+});
+
+
+
+Route::get('/guest_dashboard_tv', function () {
+
+    return view(
+        'guest_dashboard_tv'
+    );
+
+});
+
+
+Route::get('/guest-dashboard-data', function () {
+
+    $total = DB::table('guest_attendance')
+        ->count();
+
+    $latest = DB::table('guest_attendance')
+        ->orderByDesc('id')
+        ->first();
+
+    if(!$latest)
+    {
+        return response()->json([
+
+            'total' => $total,
+
+            'latest' => null
+
+        ]);
+    }
+
+    $guest = DB::table('guests')
+        ->where(
+            'id',
+            $latest->guest_id
+        )
+        ->first();
+
+    return response()->json([
+
+        'total' => $total,
+
+        'latest' => [
+
+            'nama' => $guest->nama,
+
+            'company' => $guest->company,
+
+            'class_code' => $guest->class_code,
+
+            'table_no' => $guest->table_no,
+
+            'scan_time' => $latest->scan_time
+
+        ]
+
+    ]);
+
+});
 
 
 
@@ -564,7 +888,7 @@ Route::get('/admin/guest', function () {
 
     $guests = $query
         ->orderBy('id','desc')
-        ->paginate(20);
+        ->paginate(10);
 
     $totalGuest = DB::table('guests')->count();
 
@@ -577,8 +901,18 @@ Route::get('/admin/guest', function () {
         ->count();
 
     $classes = DB::table('classes')
-        ->orderBy('class_code')
-        ->get();
+    ->select(
+        'classes.*',
+        DB::raw('
+            (
+                SELECT COUNT(*)
+                FROM guests
+                WHERE guests.class_code = classes.class_code
+            ) as total_guest
+        ')
+    )
+    ->orderBy('class_code')
+    ->get();
 
     return view(
         'admin.guest',
@@ -627,9 +961,9 @@ Route::post('/admin/guest/create', function (Request $request) {
 
         'checkin_status' => 'pending',
 
-        'created_at' => now(),
+        'created_at' => now('Asia/Kuala_Lumpur'),
 
-        'updated_at' => now()
+        'updated_at' => now('Asia/Kuala_Lumpur')
 
     ]);
 
@@ -708,9 +1042,9 @@ Route::post('/admin/guest/create', function (Request $request) {
 
         'checkin_status' => 'pending',
 
-        'created_at' => now(),
+        'created_at' => now('Asia/Kuala_Lumpur'),
 
-        'updated_at' => now()
+        'updated_at' => now('Asia/Kuala_Lumpur')
 
     ]);
 
@@ -769,7 +1103,7 @@ Route::post('/admin/guest/edit/{id}', function (
 
             'table_no' => $request->table_no,
 
-            'updated_at' => now()
+            'updated_at' => now('Asia/Kuala_Lumpur')
 
         ]);
 
@@ -856,5 +1190,177 @@ Route::get('/qr-guest/{id}', function ($id) {
 /*
 |--------------------------------------------------------------------------
 | CARD JEMPUTAN
+|--------------------------------------------------------------------------
+*/
+
+
+/*
+|--------------------------------------------------------------------------
+| Attendance Management
+|--------------------------------------------------------------------------
+*/
+
+
+Route::get('/admin/attendance-management', function () {
+
+    if(!session('admin_id'))
+    {
+        return redirect('/admin/login');
+    }
+
+    $attendance = DB::table('guest_attendance')
+        ->join(
+            'guests',
+            'guest_attendance.guest_id',
+            '=',
+            'guests.id'
+        );
+
+    if(request('search'))
+    {
+        $attendance->where(function($q){
+
+            $q->where(
+                'guests.nama',
+                'like',
+                '%'.request('search').'%'
+            )
+
+            ->orWhere(
+                'guests.company',
+                'like',
+                '%'.request('search').'%'
+            )
+
+            ->orWhere(
+                'guests.attendance_id',
+                'like',
+                '%'.request('search').'%'
+            )
+
+            ->orWhere(
+                'guests.table_no',
+                'like',
+                '%'.request('search').'%'
+            );
+
+        });
+    }
+
+    $attendance = $attendance
+        ->select(
+            'guest_attendance.*',
+            'guests.nama',
+            'guests.company',
+            'guests.class_code',
+            'guests.table_no',
+            'guests.attendance_id'
+        )
+        ->orderByDesc(
+            'guest_attendance.id'
+        )
+        ->paginate(20);
+
+    return view(
+        'admin.attendance_management',
+        compact('attendance')
+    );
+
+});
+
+Route::post('/admin/attendance/undo/{id}', function ($id) {
+
+    if(!session('admin_id'))
+    {
+        return redirect('/admin/login');
+    }
+
+    $attendance = DB::table('guest_attendance')
+        ->where('id',$id)
+        ->first();
+
+    if(!$attendance)
+    {
+        return back();
+    }
+
+    DB::table('attendance_undo_logs')
+        ->insert([
+
+            'attendance_id' => $attendance->id,
+
+            'guest_id' => $attendance->guest_id,
+
+            'undo_by' => session('admin_name'),
+
+            'undo_reason' => 'Manual Undo',
+
+            'created_at' => now('Asia/Kuala_Lumpur')
+
+        ]);
+
+    DB::table('guest_attendance')
+        ->where('id',$id)
+        ->delete();
+
+    DB::table('guests')
+        ->where(
+            'id',
+            $attendance->guest_id
+        )
+        ->update([
+
+            'checkin_status' => 'pending',
+
+            'checkin_time' => null,
+
+            'updated_at' => now('Asia/Kuala_Lumpur')
+
+        ]);
+
+    return back()
+        ->with(
+            'success',
+            'Check In berjaya dibatalkan'
+        );
+
+});
+
+
+Route::get('/admin/attendance-undo-logs', function () {
+
+    if(!session('admin_id'))
+    {
+        return redirect('/admin/login');
+    }
+
+    $logs = DB::table('attendance_undo_logs')
+        ->leftJoin(
+            'guests',
+            'attendance_undo_logs.guest_id',
+            '=',
+            'guests.id'
+        )
+        ->select(
+            'attendance_undo_logs.*',
+            'guests.nama',
+            'guests.company'
+        )
+        ->orderByDesc(
+            'attendance_undo_logs.id'
+        )
+        ->get();
+
+    return view(
+        'admin.attendance_undo_logs',
+        compact('logs')
+    );
+
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| Attendance Management
 |--------------------------------------------------------------------------
 */

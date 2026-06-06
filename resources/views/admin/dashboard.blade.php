@@ -109,62 +109,8 @@ body{
 
 <body>
 
-<div class="sidebar">
 
-    <div class="logo">
-
-        QR Attendance
-
-    </div>
-
-    <a href="{{ url('admin/guest') }}">
-    Guest Management
-    </a>
-
-
-    <a href="{{ url('admin/dashboard') }}">
-        
-        Dashboard
-    </a>
-
-    <a href="{{ url('admin/attendance') }}">
-        Attendance
-    </a>
-
-    <a href="{{ url('admin/report') }}">
-        Report
-    </a>
-
-    @if(session('admin_level') == 'superadmin')
-
-        <a href="{{ url('admin/user') }}">
-            User Management
-        </a>
-
-        <a href="{{ url('admin/setting') }}">
-            Setting
-        </a>
-
-    @endif
-
-    @if(
-        in_array(
-            session('admin_level'),
-            ['superadmin','supervisor']
-        )
-    )
-
-        <a href="{{ url('admin/export') }}">
-            Export Excel
-        </a>
-
-    @endif
-
-    <a href="{{ url('admin/logout') }}">
-        Logout
-    </a>
-
-</div>
+@include('admin.sidebar')
 
 <div class="content">
 
@@ -208,7 +154,7 @@ body{
                 <div class="card-body">
 
                     <div class="text-muted">
-                        Attendance Today
+                        Tetamu Hadir
                     </div>
 
                     <div
@@ -232,7 +178,7 @@ body{
                 <div class="card-body">
 
                     <div class="text-muted">
-                        Total Attendance
+                        Belum Check In
                     </div>
 
                     <div
@@ -256,10 +202,10 @@ body{
                 <div class="card-body">
 
                     <div class="text-muted">
-                        Total User
+                        Jumlah Tetamu
                     </div>
 
-                    <div class="stat-number">
+                    <div class="stat-number" id="totalGuest">
 
                         0
 
@@ -278,12 +224,12 @@ body{
                 <div class="card-body">
 
                     <div class="text-muted">
-                        Event Active
+                        Progress
                     </div>
 
-                    <div class="stat-number">
+                    <div class="stat-number" id="attendancePercent">
 
-                        1
+                        0%
 
                     </div>
 
@@ -296,6 +242,56 @@ body{
     </div>
 
     <br>
+
+        <div class="card">
+
+            <div class="card-header">
+
+                Progress Kehadiran
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="d-flex justify-content-between mb-2">
+
+                    <span>
+
+                        Tetamu Hadir
+
+                    </span>
+
+                    <span id="progressText">
+
+                        0 / 0
+
+                    </span>
+
+                </div>
+
+                <div
+                class="progress"
+                style="height:30px;">
+
+                    <div
+                    id="progressBar"
+                    class="progress-bar bg-success progress-bar-striped progress-bar-animated"
+                    role="progressbar"
+                    style="width:0%">
+
+                        0%
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <hr>
+
+        
 
     <div class="card">
 
@@ -319,8 +315,31 @@ body{
         </div>
 
     </div>
+    <hr>
+                <div class="card">
 
-</div>
+                <div class="card-header">
+
+                    Latest Scan
+
+                </div>
+
+                <div class="card-body">
+
+                    <h3 id="latestName">
+
+                        Menunggu Scan...
+
+                    </h3>
+
+                    <p id="latestInfo"></p>
+
+                </div>
+
+            </div>
+
+
+
 
 
 
@@ -344,13 +363,89 @@ function loadAttendance(){
         ).innerHTML =
         data.totalAttendance;
 
+        document.getElementById(
+            'totalGuest'
+        ).innerHTML =
+        data.totalGuest;
+
+        let totalGuest =
+        parseInt(data.totalGuest);
+
+        let hadir =
+        parseInt(data.attendanceToday);
+
+        let percent = 0;
+
+        if(totalGuest > 0)
+        {
+
+            percent =
+            Math.round(
+                (hadir / totalGuest) * 100
+            );
+
+        }
+
+        document.getElementById(
+            'attendancePercent'
+        ).innerHTML =
+        percent + '%';
+
+        document.getElementById(
+            'progressText'
+        ).innerHTML =
+
+            hadir +
+
+            ' / ' +
+
+            totalGuest;
+
+        document.getElementById(
+            'progressBar'
+        ).style.width =
+
+            percent + '%';
+
+        document.getElementById(
+            'progressBar'
+        ).innerHTML =
+
+            percent + '%';
+
+        if(data.latest)
+        {
+
+            document.getElementById(
+                'latestName'
+            ).innerHTML =
+            data.latest.nama;
+
+            document.getElementById(
+                'latestInfo'
+            ).innerHTML =
+
+                data.latest.class_code +
+
+                ' | MEJA ' +
+
+                data.latest.table_no;
+
+        }
+
     });
 
 }
 
-setInterval(loadAttendance, 1000);
+loadAttendance();
 
+setInterval(
+    loadAttendance,
+    1000
+);
 </script>
+
+
 </body>
 
 </html>
