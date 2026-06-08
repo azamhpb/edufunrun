@@ -532,8 +532,8 @@ body{
                                 $message =
                                 "Assalamualaikum dan Salam Sejahtera.\n\n".
                                 "Jemputan *Majlis Makan Malam Gala Sabah 2026*.\n\n".
-                                "Nama*: ".$guest->nama."*\n".
-                                "Kategori_: ".$guest->class_code."_\n".
+                                "Nama: *".$guest->nama."*\n".
+                                "Kategori: _".$guest->class_code."_\n".
                                 "Meja: _".$guest->table_no."_\n\n".
                                 "Kad Jemputan:\n".
                                 url('card/'.$guest->qr_token);
