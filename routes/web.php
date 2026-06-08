@@ -1086,7 +1086,7 @@ Route::post('/admin/guest/create', function (Request $request) {
 
         $message =
         "Daftar Baru.\n\n".
-        "Admin SIla Hantar Kad Jemputan.\n\n".
+        "Admin Sila Hantar Kad Jemputan.\n\n".
         "Nama: ".$request->nama."\n".
         "Kategori: ".$request->class_code."\n".
         "Meja: ".$request->table_no."\n\n".
