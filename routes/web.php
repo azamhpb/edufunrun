@@ -1081,6 +1081,39 @@ Route::post('/admin/guest/create', function (Request $request) {
         // Dapatkan QR Token untuk dihantar dalam SMS
 
 
+        // SMS dekat admin 
+    $phone = preg_replace('/[^0-9]/', '', $request->phone_no);
+
+        $message =
+        "Daftar Baru.\n\n".
+        "Admin SIla Hantar Kad Jemputan.\n\n".
+        "Nama: ".$request->nama."\n".
+        "Kategori: ".$request->class_code."\n".
+        "Meja: ".$request->table_no."\n\n".
+        "Phone: ".$phone."\n\n".
+        "Waktu Create Guest:\n".
+        now('Asia/Kuala_Lumpur')->format('d/m/Y h:i A');
+
+        $api_url =
+        "http://cloudsms.trio-mobile.com/index.php/api/bulk_mt?".
+        http_build_query([
+
+            'api_key'      => 'e998433bf9918a7ea56479af11b106e43d587294e573741ed1b318163a6610e6',
+            'action'       => 'send',
+            'to'           => '60106593357',
+            'msg'          => $message,
+            'sender_id'    => 'CLOUDSMS',
+            'content_type' => '1',
+            'mode'         => 'shortcode',
+            'campaign'     => 'GALASABAH2026'
+
+        ]);
+
+        $response = @file_get_contents($api_url);
+
+        // Dapatkan QR Token untuk dihantar dalam SMS
+
+
     return redirect('/admin/guest')
         ->with(
             'success',
