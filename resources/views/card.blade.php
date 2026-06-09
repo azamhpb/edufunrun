@@ -199,7 +199,7 @@ body{
 
     position:absolute;
 
-    top:1096px;
+    top:1066px;
 
     left:164px;
 
@@ -217,15 +217,15 @@ body{
 
     position:absolute;
 
-    top:1210px;
+    top:1150px;
 
-    left:342px;
+    left:382px;
 
-    width:400px;
+    width:350px;
 
     text-align:center;
 
-    font-size:26px;
+    font-size:24px;
 
     font-weight:bold;
 
@@ -237,7 +237,7 @@ body{
 
     position:absolute;
 
-    top:1096px;
+    top:1066px;
 
     left:342px;
 
@@ -259,7 +259,7 @@ body{
 
     left:85px;
 
-    top:1285px;
+    top:1212px;
 
 
     backdrop-filter:blur(10px);
@@ -284,7 +284,7 @@ body{
 <div class="card-container">
 
     <img
-    src="{{ asset('Makan-Malam-Gala-Sabah-2026.png') }}"
+    src="{{ asset('img/card.png') }}"
     class="card-bg">
 
     <div class="category {{ $badgeClass }} nama">
@@ -334,8 +334,8 @@ body{
 
         <img
        src="{{ url('qr-guest/'.$guest->id) }}"
-        width="175"
-        height="175" alt="QR Code">
+        width="250"
+        height="250" alt="QR Code">
 
 
         

@@ -32,7 +32,7 @@ body{
         rgba(0,0,0,0.75),
         rgba(0,0,0,0.75)
     ),
-    url('https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=2000');
+    url('{{ asset('img/bg.png') }}');
 
     background-size:cover;
     background-position:center;
