@@ -1014,7 +1014,7 @@ Route::post('/admin/guest/create', function (Request $request) {
 
         'table_no' => $request->table_no,
 
-        'qr_token' => Str::uuid(),
+        'qr_token' => 'GDS'.strtoupper(Str::random(8)),
 
         'checkin_status' => 'pending',
 
