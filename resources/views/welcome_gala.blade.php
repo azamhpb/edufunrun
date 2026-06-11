@@ -5,8 +5,7 @@
 
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="https://yayasanangkasa.coop/images/logo%20yayasan%20angkasa%202018%201to1.png">
-<meta name="viewport"
-content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>
 
@@ -48,10 +47,6 @@ body{
 
     text-align:center;
 
-
-
-
-
     padding:30px;
 
     border-radius:25px;
@@ -74,6 +69,25 @@ body{
 
 }
 
+/* BAHARU: Kod Auto-Size untuk Mobile dan Tablet */
+@media (max-width: 768px) {
+    .title {
+        font-size: 35px; /* Saiz teks lebih kecil untuk phone & tablet */
+    }
+    
+    .subtitle {
+        font-size: 18px; /* Saiz subtitle lebih kecil untuk phone & tablet */
+    }
+
+    .box {
+        padding: 15px; /* Kurangkan padding kotak di skrin kecil */
+    }
+
+    .box > img {
+        width: 100px !important; /* Logo yayasan lebih kecil di skrin kecil */
+    }
+}
+
 </style>
 
 </head>
@@ -81,7 +95,6 @@ body{
 <body>
 
 <div class="box">
-
 
 <img
 src="https://yayasanangkasa.coop/images/logo%20yayasan%20angkasa%202018%201to1.png"
