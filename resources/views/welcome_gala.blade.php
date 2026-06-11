@@ -5,15 +5,16 @@
 
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="https://yayasanangkasa.coop/images/logo%20yayasan%20angkasa%202018%201to1.png">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport"
+content="width=device-width, initial-scale=1">
 
 <title>
 
 Gala Dinner Sabah 2026
 
 </title>
-
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
 
 <style>
 
@@ -47,6 +48,7 @@ body{
 
     text-align:center;
 
+
     padding:30px;
 
     border-radius:25px;
@@ -69,22 +71,33 @@ body{
 
 }
 
-/* BAHARU: Kod Auto-Size untuk Mobile dan Tablet */
+/* ======================================================== */
+/* KOD AUTO-SIZE DIPERBAIKI (ASINGKAN LOGO & POSTER DI PHONE)*/
+/* ======================================================== */
 @media (max-width: 768px) {
     .title {
-        font-size: 35px; /* Saiz teks lebih kecil untuk phone & tablet */
+        font-size: 32px; /* Kecilkan teks tajuk di phone */
     }
     
     .subtitle {
-        font-size: 18px; /* Saiz subtitle lebih kecil untuk phone & tablet */
+        font-size: 18px; /* Kecilkan subtitle di phone */
     }
 
     .box {
-        padding: 15px; /* Kurangkan padding kotak di skrin kecil */
+        padding: 10px; /* Lebarkan ruang untuk poster */
     }
 
-    .box > img {
-        width: 100px !important; /* Logo yayasan lebih kecil di skrin kecil */
+    /* CARA BARU: Sasarkan imej pertama dalam kotak (Khusus untuk LOGO sahaja) */
+    .box > img:first-of-type {
+        width: 100px !important; /* Kekal kecil 100px di phone, tidak terikut besar */
+    }
+
+    /* Sasarkan imej yang ada class img-fluid (Khusus untuk POSTER sahaja) */
+    .box .img-fluid {
+        width: 100% !important; /* Dipaksa lebar penuh di phone */
+        max-width: 100% !important;
+        padding: 10px !important; /* Kurangkan padding dalam border poster */
+        border-radius: 15px !important; /* Kemaskan bucu border poster */
     }
 }
 
@@ -96,6 +109,8 @@ body{
 
 <div class="box">
 
+
+<!-- URL Logo Yayasan Angkasa kekal di sini -->
 <img
 src="https://yayasanangkasa.coop/images/logo%20yayasan%20angkasa%202018%201to1.png"
 width="150"
@@ -113,6 +128,7 @@ class="mb-4">
     src="{{ asset('img/poster-2026-06-11.png') }}"
     class="img-fluid mb-4"
     style="
+    max-width:800px;
     backdrop-filter:blur(10px);
 
     border:1px solid rgba(255,255,255,0.15);
