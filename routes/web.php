@@ -158,7 +158,7 @@ Route::get('/db-test', function () {
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', function () {
+Route::get('/admin/login', function () {
 
     if(session('admin_id'))
     {
@@ -224,7 +224,7 @@ Route::get('/admin/dashboard', function () {
 
     if(!session('admin_id'))
     {
-        return redirect('/');
+        return redirect('/admin/login');
     }
 
     return view('admin.dashboard');
@@ -295,7 +295,7 @@ Route::get('/admin/user', function () {
 
     if(!session('admin_id'))
     {
-        return redirect('/');
+        return redirect('/admin/login');
     }
 
     if(session('admin_level') != 'superadmin')
@@ -318,7 +318,7 @@ Route::get('/admin/user/create', function () {
 
     if(!session('admin_id'))
     {
-        return redirect('/');
+        return redirect('/admin/login');
     }
 
     if(session('admin_level') != 'superadmin')
@@ -370,7 +370,7 @@ Route::get('/admin/user/edit/{id}', function ($id) {
 
     if(!session('admin_id'))
     {
-        return redirect('/');
+        return redirect('/admin/login');
     }
 
     if(session('admin_level') != 'superadmin')
