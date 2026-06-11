@@ -746,6 +746,22 @@ Route::post('/guest-scan/{scanner_id}', function (
 
     ]);
 
+
+    if(
+    str_starts_with($guest->class_code,'DIAMOND')
+    ||
+    str_starts_with($guest->class_code,'PLATINUM')
+)
+{
+    @file_get_contents(
+        url(
+            'guest-checkin/'.
+            $guest->id.'/'.
+            $scanner_id
+        )
+    );
+}
+
     return response()->json([
 
         'success' => true,
@@ -1501,5 +1517,102 @@ Route::get('/admin/attendance-undo-logs', function () {
 /*
 |--------------------------------------------------------------------------
 | Attendance Management
+|--------------------------------------------------------------------------
+*/
+
+
+/*
+|--------------------------------------------------------------------------
+| VIP CHECK-IN NOTIFICATION
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/guest-checkin/{id}/{scanner}', function($id, $scanner){
+
+    $guest = DB::table('guests')
+        ->where('id',$id)
+        ->first();
+
+    // simpan attendance
+
+    if(
+        str_starts_with(
+            $guest->class_code,
+            'DIAMOND'
+        )
+        ||
+        str_starts_with(
+            $guest->class_code,
+            'PLATINUM'
+        )
+    )
+    {
+
+        Mail::send(
+
+            'emails.vip_checkin',
+
+            [
+
+                'guest' => $guest,
+
+                'scanner' => 'Scanner '.$scanner
+
+            ],
+
+            function($mail) use ($guest){
+
+                $mail
+                    ->to('azam.yayasanangkasa@gmail.com')
+                    ->bcc('azamhpb@gmail.com')
+                    ->subject(
+                        '[VIP CHECK-IN] '.$guest->nama
+                    );
+
+            }
+
+        );
+
+
+        // SMS dekat admin 
+        
+
+        $message =
+        "VIP CHECK-IN\n\n".
+        "Nama: ".$guest->nama."\n".
+        "Kategori: ".$guest->class_code."\n".
+        "Meja: ".$guest->table_no."\n".
+        "Telefon: ".$guest->phone_no."\n".
+        "Scanner: ".$scanner."\n\n".
+        "Masa:\n".
+        now('Asia/Kuala_Lumpur')->format('d/m/Y h:i A');
+
+        $api_url =
+        "http://cloudsms.trio-mobile.com/index.php/api/bulk_mt?".
+        http_build_query([
+
+            'api_key'      => 'e998433bf9918a7ea56479af11b106e43d587294e573741ed1b318163a6610e6',
+            'action'       => 'send',
+            'to'           => '60127743756', // Gantikan dengan nombor admin
+            'msg'          => $message,
+            'sender_id'    => 'CLOUDSMS',
+            'content_type' => '1',
+            'mode'         => 'shortcode',
+            'campaign'     => 'GALASABAH2026'
+
+        ]);
+
+        $response = @file_get_contents($api_url);
+
+        
+
+
+    }
+
+});
+
+/*
+|--------------------------------------------------------------------------
+| VIP CHECK-IN NOTIFICATION
 |--------------------------------------------------------------------------
 */
