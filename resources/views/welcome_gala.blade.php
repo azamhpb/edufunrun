@@ -113,7 +113,6 @@ class="mb-4">
     src="{{ asset('img/poster-2026-06-11.png') }}"
     class="img-fluid mb-4"
     style="
-    max-width:800px;
     backdrop-filter:blur(10px);
 
     border:1px solid rgba(255,255,255,0.15);
