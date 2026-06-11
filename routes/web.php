@@ -1106,39 +1106,24 @@ Route::post('/admin/guest/create', function (Request $request) {
     ]);
 
 
+        // SMS dan Email dekat admin 
+        $adminName = session('admin_name');
 
+            @file_get_contents(
 
-        // SMS dekat admin 
-        $phone = preg_replace('/[^0-9]/', '', $request->phone_no);
+                url(
 
-        $message =
-        "Daftar Baru.\n\n".
-        "Admin Sila Hantar Kad Jemputan.\n\n".
-        "Nama: ".$request->nama."\n".
-        "Kategori: ".$request->class_code."\n".
-        "Meja: ".$request->table_no."\n\n".
-        "Phone: ".$phone."\n\n".
-        "Waktu Create Guest:\n".
-        now('Asia/Kuala_Lumpur')->format('d/m/Y h:i A');
+                    'guest-new/'.
 
-        $api_url =
-        "http://cloudsms.trio-mobile.com/index.php/api/bulk_mt?".
-        http_build_query([
+                    $attendanceId.'/'.
 
-            'api_key'      => 'e998433bf9918a7ea56479af11b106e43d587294e573741ed1b318163a6610e6',
-            'action'       => 'send',
-            'to'           => '60127743756', // Gantikan dengan nombor admin
-            'msg'          => $message,
-            'sender_id'    => 'CLOUDSMS',
-            'content_type' => '1',
-            'mode'         => 'shortcode',
-            'campaign'     => 'GALASABAH2026'
+                    urlencode($adminName)
 
-        ]);
+                )
 
-        $response = @file_get_contents($api_url);
+            );
 
-        // Dapatkan QR Token untuk dihantar dalam SMS
+        
 
 
     return redirect('/admin/guest')
@@ -1146,6 +1131,10 @@ Route::post('/admin/guest/create', function (Request $request) {
             'success',
             'Tetamu berjaya ditambah'
         );
+
+
+
+
 
 });
 
@@ -1608,6 +1597,80 @@ Route::get('/guest-checkin/{id}/{scanner}', function($id, $scanner){
 
 
     }
+
+});
+
+
+Route::get('/guest-new/{id}/{adminName}', function($id, $adminName){
+
+    $guest = DB::table('guests')
+        ->where('attendance_id',$id)
+        ->first();
+
+    if(!$guest)
+    {
+        return 'Guest Not Found';
+    }
+
+    // EMAIL ADMIN
+
+    Mail::send(
+
+        'emails.guest_new',
+
+        [
+
+            'guest'     => $guest,
+
+            'adminName' => $adminName
+
+        ],
+
+        function($mail) use ($guest){
+
+            $mail
+                ->to('azam.yayasanangkasa@gmail.com')
+                ->bcc('azamhpb@gmail.com')
+                ->subject(
+                    '[NEW GUEST] '.$guest->nama.
+                    ' ('.now('Asia/Kuala_Lumpur')->format('d/m/Y h:i A').')'
+                );
+
+        }
+
+    );
+
+    // SMS ADMIN
+
+    $message =
+    "NEW GUEST REGISTRATION\n\n".
+    "Nama: ".$guest->nama."\n".
+    "Company: ".$guest->company."\n".
+    "Kategori: ".$guest->class_code."\n".
+    "Meja: ".$guest->table_no."\n".
+    "Telefon: ".$guest->phone_no."\n".
+    "Admin Create: ".$adminName."\n\n".
+    "Masa:\n".
+    now('Asia/Kuala_Lumpur')->format('d/m/Y h:i A');
+
+    $api_url =
+    "http://cloudsms.trio-mobile.com/index.php/api/bulk_mt?".
+    http_build_query([
+
+        'api_key'      => 'e998433bf9918a7ea56479af11b106e43d587294e573741ed1b318163a6610e6',
+        'action'       => 'send',
+        'to'           => '60127743756',
+        'msg'          => $message,
+        'sender_id'    => 'CLOUDSMS',
+        'content_type' => '1',
+        'mode'         => 'shortcode',
+        'campaign'     => 'GALASABAH2026'
+
+    ]);
+
+    @file_get_contents($api_url);
+
+    return 'OK';
 
 });
 
