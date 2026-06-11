@@ -1566,7 +1566,7 @@ Route::get('/guest-checkin/{id}/{scanner}', function($id, $scanner){
                     ->to('azam.yayasanangkasa@gmail.com')
                     ->bcc('azamhpb@gmail.com')
                     ->subject(
-                        '[VIP CHECK-IN] '.$guest->nama
+                        '[VIP CHECK-IN] '.$guest->nama . ' (TIME ' . now('Asia/Kuala_Lumpur')->format('d/m/Y h:i A') . ')'
                     );
 
             }
