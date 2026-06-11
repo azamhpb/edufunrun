@@ -1305,7 +1305,7 @@ Route::get('/admin/guest/sms/{id}', function ($id) {
 
 
 
-Route::get('/card/{id}', function ($id) {
+Route::get('/c/{id}', function ($id) {
 
     $guest = DB::table('guests')
         ->where('qr_token',$id)

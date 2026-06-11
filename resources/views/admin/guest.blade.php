@@ -520,7 +520,7 @@ body{
                             Delete
 
                             </a>
-                            <a href="{{ url('card/'.$guest->qr_token) }}"
+                            <a href="{{ url('c/'.$guest->qr_token) }}"
                             target="_blank"
                             class="btn btn-primary btn-sm">
 
@@ -536,7 +536,7 @@ body{
                                 "Kategori: _".$guest->class_code."_\n".
                                 "Meja: _".$guest->table_no."_\n\n".
                                 "Kad Jemputan:\n".
-                                url('card/'.$guest->qr_token);
+                                url('c/'.$guest->qr_token);
 
                                 @endphp
 
