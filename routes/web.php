@@ -7,7 +7,7 @@ use App\Models\Attendance;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-
+use Illuminate\Support\Facades\Mail;
 
 
 
@@ -145,6 +145,26 @@ Route::get('/db-test', function () {
     ]);
 
     return 'DATABASE CONNECTED';
+
+});
+
+
+Route::get('/test-gmail', function () {
+
+    Mail::raw('Test Email', function($m){
+
+        $m->to('azamhpb@gmail.com')
+          ->subject('TEST');
+
+    });
+
+    return 'OK';
+
+});
+
+Route::get('/test-mail-config', function () {
+
+    dd(config('mail.mailers.smtp'));
 
 });
 
