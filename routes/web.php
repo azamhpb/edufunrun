@@ -1316,7 +1316,7 @@ Route::get('/c/{id}', function ($id) {
 Route::get('/qr-guest/{id}', function ($id) {
 
     $guest = DB::table('guests')
-        ->where('id', $id)
+        ->where('qr_token', $id)
         ->first();
 
     if(!$guest)
