@@ -726,12 +726,12 @@ loadTableSummary();
 
 setInterval(
     loadAttendance,
-    1000
+    20000
 );
 
 setInterval(
     loadTableSummary,
-    5000
+    25000
 );
 </script>
 
