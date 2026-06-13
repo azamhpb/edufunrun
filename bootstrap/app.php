@@ -14,6 +14,8 @@ return Application::configure(basePath: dirname(__DIR__))
 
             Route::middleware('web')
                 ->group(base_path('routes/web-guests.php'));
+            Route::middleware('web')
+                ->group(base_path('routes/web-kaunterqr.php'));
 
 
         }

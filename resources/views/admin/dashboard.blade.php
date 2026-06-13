@@ -562,7 +562,9 @@ body{
 
 function loadAttendance(){
 
-    fetch('{{ url("admin/live-attendance") }}')
+    fetch('{{ url("admin/live-attendance") }}', {
+    cache: 'no-store'
+    })
 
     .then(response => response.json())
 
@@ -654,7 +656,9 @@ function loadAttendance(){
 
 function loadTableSummary(){
 
-    fetch('{{ url("admin/live-table-summary") }}')
+    fetch('{{ url("admin/live-table-summary") }}', {
+    cache: 'no-store'
+    })
 
     .then(response => response.json())
 
