@@ -5,7 +5,7 @@
 
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="https://yayasanangkasa.coop/images/logo%20yayasan%20angkasa%202018%201to1.png">
-<title>Attendance Management</title>
+<title>{{ session('admin_name') }} | Attendance Management</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
