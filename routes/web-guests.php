@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\KaunterQRController;
+use App\Http\Controllers\mejaclassController;
 
 
 
