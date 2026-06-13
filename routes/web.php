@@ -355,6 +355,58 @@ Route::get('/admin/user', function () {
 
 });
 
+Route::get('/admin/live-table-summary', function(){
+
+    $diamond_used = DB::table('guests')
+        ->where('class_code','like','DIAMOND%')
+        ->count();
+
+    $diamond_max = DB::table('classes')
+        ->where('class_code','like','DIAMOND%')
+        ->sum('max_pax');
+
+    $platinum_used = DB::table('guests')
+        ->where('class_code','like','PLATINUM%')
+        ->count();
+
+    $platinum_max = DB::table('classes')
+        ->where('class_code','like','PLATINUM%')
+        ->sum('max_pax');
+
+    $gold_used = DB::table('guests')
+        ->where('class_code','like','GOLD%')
+        ->count();
+
+    $gold_max = DB::table('classes')
+        ->where('class_code','like','GOLD%')
+        ->sum('max_pax');
+
+    $silver_used = DB::table('guests')
+        ->where('class_code','like','SILVER%')
+        ->count();
+
+    $silver_max = DB::table('classes')
+        ->where('class_code','like','SILVER%')
+        ->sum('max_pax');
+
+    return response()->json([
+
+        'diamond_used' => $diamond_used,
+        'diamond_max'  => $diamond_max,
+
+        'platinum_used' => $platinum_used,
+        'platinum_max'  => $platinum_max,
+
+        'gold_used' => $gold_used,
+        'gold_max'  => $gold_max,
+
+        'silver_used' => $silver_used,
+        'silver_max'  => $silver_max
+
+    ]);
+
+});
+
 Route::get('/admin/user/create', function () {
 
     if(!session('admin_id'))

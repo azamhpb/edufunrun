@@ -276,6 +276,188 @@ body{
 
     <br>
 
+    
+<div class="row">
+
+    <!-- DIAMOND -->
+
+    <div class="col-md-3">
+
+        <div class="card stat-card">
+
+            <div class="card-body">
+
+                <div class="text-muted">
+
+                    DIAMOND
+
+                </div>
+
+                <div
+                class="stat-number"
+                id="diamondCount">
+
+                    0 / 0
+
+                </div>
+
+                <div
+                class="progress mt-2"
+                style="height:25px;">
+
+                    <div
+                    id="diamondBar"
+                    class="progress-bar bg-dark progress-bar-striped progress-bar-animated"
+                    style="width:0%">
+
+                        0%
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- PLATINUM -->
+
+    <div class="col-md-3">
+
+        <div class="card stat-card">
+
+            <div class="card-body">
+
+                <div class="text-muted">
+
+                    PLATINUM
+
+                </div>
+
+                <div
+                class="stat-number"
+                id="platinumCount">
+
+                    0 / 0
+
+                </div>
+
+                <div
+                class="progress mt-2"
+                style="height:25px;">
+
+                    <div
+                    id="platinumBar"
+                    class="progress-bar bg-secondary progress-bar-striped progress-bar-animated"
+                    style="width:0%">
+
+                        0%
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- GOLD -->
+
+    <div class="col-md-3">
+
+        <div class="card stat-card">
+
+            <div class="card-body">
+
+                <div class="text-muted">
+
+                    GOLD
+
+                </div>
+
+                <div
+                class="stat-number"
+                id="goldCount">
+
+                    0 / 0
+
+                </div>
+
+                <div
+                class="progress mt-2"
+                style="height:25px;">
+
+                    <div
+                    id="goldBar"
+                    class="progress-bar bg-warning progress-bar-striped progress-bar-animated"
+                    style="width:0%">
+
+                        0%
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- SILVER -->
+
+    <div class="col-md-3">
+
+        <div class="card stat-card">
+
+            <div class="card-body">
+
+                <div class="text-muted">
+
+                    SILVER
+
+                </div>
+
+                <div
+                class="stat-number"
+                id="silverCount">
+
+                    0 / 0
+
+                </div>
+
+                <div
+                class="progress mt-2"
+                style="height:25px;">
+
+                    <div
+                    id="silverBar"
+                    class="progress-bar bg-info progress-bar-striped progress-bar-animated"
+                    style="width:0%">
+
+                        0%
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<br>
+
+
+    <br>
+
         <div class="card">
 
             <div class="card-header">
@@ -470,11 +652,86 @@ function loadAttendance(){
 
 }
 
+function loadTableSummary(){
+
+    fetch('{{ url("admin/live-table-summary") }}')
+
+    .then(response => response.json())
+
+    .then(data => {
+
+        updateCategory(
+            'diamond',
+            data.diamond_used,
+            data.diamond_max
+        );
+
+        updateCategory(
+            'platinum',
+            data.platinum_used,
+            data.platinum_max
+        );
+
+        updateCategory(
+            'gold',
+            data.gold_used,
+            data.gold_max
+        );
+
+        updateCategory(
+            'silver',
+            data.silver_used,
+            data.silver_max
+        );
+
+    });
+
+}
+
+function updateCategory(
+    prefix,
+    used,
+    max
+){
+
+    let percent = 0;
+
+    if(max > 0)
+    {
+        percent = Math.round(
+            (used / max) * 100
+        );
+    }
+
+    document.getElementById(
+        prefix + 'Count'
+    ).innerHTML =
+    used + ' / ' + max;
+
+    document.getElementById(
+        prefix + 'Bar'
+    ).style.width =
+    percent + '%';
+
+    document.getElementById(
+        prefix + 'Bar'
+    ).innerHTML =
+    percent + '%';
+
+}
+
+
 loadAttendance();
+loadTableSummary();
 
 setInterval(
     loadAttendance,
     1000
+);
+
+setInterval(
+    loadTableSummary,
+    5000
 );
 </script>
 
