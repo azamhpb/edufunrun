@@ -296,52 +296,65 @@ const posisi = {};
 posisi['VIP'] = {left:525, top:245};
 
 // Kolum meja
-const leftColumn = {
-    1:479,
-    13:435,
-    25:390,
-    37:342,
-    49:299,
-    61:258,
-    73:214,
-    85:167
-};
+const leftPos = [
+    167,
+    214,
+    258,
+    299,
+    342,
+    390,
+    435,
+    479
+];
 
-// Baris meja
-const topRow = {
-    1:474,
-    2:435,
-    3:399,
-    4:361,
-    5:326,
-    6:290,
-    7:239,
-    8:199,
-    9:163,
-    10:128,
-    11:91,
-    12:55
-};
+const topPos = [
+    55,
+    91,
+    128,
+    163,
+    199,
+    239,
+    290,
+    326,
+    361,
+    399,
+    435,
+    474
+];
 
 // Meja 1 - 96
-for(let startTable in leftColumn)
-{
-    let left = leftColumn[startTable];
+const columns = [
 
-    for(let i=0;i<12;i++)
+    [85,86,87,88,89,90,91,92,93,94,95,96],
+    [84,83,82,81,80,79,78,77,76,75,74,73],
+
+    [61,62,63,64,65,66,67,68,69,70,71,72],
+    [60,59,58,57,56,55,54,53,52,51,50,49],
+
+    [37,38,39,40,41,42,43,44,45,46,47,48],
+    [36,35,34,33,32,31,30,29,28,27,26,25],
+
+    [13,14,15,16,17,18,19,20,21,22,23,24],
+    [12,11,10,9,8,7,6,5,4,3,2,1]
+
+];
+
+for(let col = 0; col < columns.length; col++)
+{
+    for(let row = 0; row < columns[col].length; row++)
     {
-        let tableNo =
-            parseInt(startTable) + i;
+        let tableNo = columns[col][row];
 
         posisi[tableNo] = {
 
-            left:left,
+            left: leftPos[col],
 
-            top:topRow[i+1]
+            top: topPos[row]
 
         };
     }
 }
+
 
 // Meja 97 - 100
 posisi[97] = {
