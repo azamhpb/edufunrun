@@ -84,6 +84,64 @@ body{
 
 }
 
+.screen-layout{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:40px;
+
+}
+
+.floorplan-wrap{
+
+    position:relative;
+
+    width:700px;
+
+}
+
+.floorplan{
+
+    width:100%;
+
+    border-radius:20px;
+
+}
+
+.table-marker{
+
+    position:absolute;
+
+    width:40px;
+    height:40px;
+
+    border:4px solid red;
+
+    border-radius:50%;
+
+    display:none;
+
+    animation:pulse 1s infinite;
+}
+
+@keyframes pulse{
+
+    0%{
+        transform:scale(1);
+        opacity:1;
+    }
+
+    100%{
+        transform:scale(1.4);
+        opacity:.2;
+    }
+
+}
+
 .guest-name{
 
     font-size:70px;
@@ -193,6 +251,8 @@ body{
 
     </div>
 
+    <div class="screen-layout">
+
     <div
     class="latest-box"
     id="guestBox">
@@ -205,6 +265,21 @@ body{
 
     </div>
 
+    <div class="floorplan-wrap">
+
+        <img
+        src="{{ asset('img/floorplan.jpg') }}"
+        class="floorplan">
+
+        <div
+        id="tableMarker"
+        class="table-marker">
+        </div>
+
+    </div>
+
+</div>
+
     <div class="footer">
 
         Majlis Makan Malam Gala Dinner Sabah 2026
@@ -214,6 +289,82 @@ body{
 </div>
 
 <script>
+
+const posisi = {};
+
+// VIP
+posisi['VIP'] = {left:769, top:302};
+
+// Kolum meja
+const leftColumn = {
+    1:479,
+    13:627,
+    25:563,
+    37:494,
+    49:433,
+    61:375,
+    73:313,
+    85:247
+};
+
+// Baris meja
+const topRow = {
+    1:474,
+    2:435,
+    3:577,
+    4:523,
+    5:473,
+    6:418,
+    7:345,
+    8:291,
+    9:241,
+    10:187,
+    11:136,
+    12:82
+};
+
+// Meja 1 - 96
+for(let startTable in leftColumn)
+{
+    let left = leftColumn[startTable];
+
+    for(let i=0;i<12;i++)
+    {
+        let tableNo =
+            parseInt(startTable) + i;
+
+        posisi[tableNo] = {
+
+            left:left,
+
+            top:topRow[i+1]
+
+        };
+    }
+}
+
+// Meja 97 - 100
+posisi[97] = {
+    left:176,
+    top:452
+};
+
+posisi[98] = {
+    left:176,
+    top:395
+};
+
+posisi[99] = {
+    left:176,
+    top:339
+};
+
+posisi[100] = {
+    left:176,
+    top:280
+};
+
+
 
 let lastAttendanceId = 0;
 
@@ -282,6 +433,37 @@ function loadData()
 
         lastAttendanceId =
         data.attendance_id;
+
+        let meja = data.table_no;
+
+        // VIP
+        if(
+            data.class_code &&
+            data.class_code.startsWith('DIAMOND')
+        )
+        {
+            meja = 'VIP';
+        }
+
+        let marker =
+        document.getElementById(
+            'tableMarker'
+        );
+
+        if(posisi[meja])
+        {
+            marker.style.display = 'block';
+
+            const scale = 700 / 1000;
+
+            marker.style.left =
+                ((posisi[meja].left))
+                + 'px';
+
+            marker.style.top =
+                ((posisi[meja].top))
+                + 'px';
+        }
 
         document
         .getElementById(
