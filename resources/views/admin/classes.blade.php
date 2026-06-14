@@ -8,7 +8,7 @@
 <link rel="icon" type="image/png" href="https://yayasanangkasa.coop/images/logo%20yayasan%20angkasa%202018%201to1.png">
 <title>
 
-Classes & Table Management
+{{ session('admin_name') }} | Classes & Table Management
 
 </title>
 

@@ -96,7 +96,10 @@ Route::get('/admin/floorplan', function(){
             DB::raw('COUNT(*) as total')
         )
         ->groupBy('class_code')
-        ->pluck('total','class_code');
+        ->pluck(
+            'total',
+            'class_code'
+        );
 
     foreach($classes as $class)
     {

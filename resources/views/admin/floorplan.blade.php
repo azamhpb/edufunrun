@@ -4,10 +4,10 @@
 <head>
 
 <meta charset="UTF-8">
-
+<link rel="icon" type="image/png" href="https://yayasanangkasa.coop/images/logo%20yayasan%20angkasa%202018%201to1.png">
 <title>
 
-Floor Plan View
+{{ session('admin_name') }} | Floor Plan View
 
 </title>
 
@@ -137,15 +137,39 @@ body{
 
     text-decoration:none;
 
-    text-align:center;
+    display:flex;
 
-    line-height:42px;
+    justify-content:center;
+
+    align-items:center;
 
     font-size:12px;
 
     font-weight:bold;
 
     border:2px solid white;
+
+    overflow:visible;
+
+}
+
+.pax-count{
+
+    position:absolute;
+
+    top:32px;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    font-size:12px;
+
+    font-weight:bold;
+
+    white-space:nowrap;
+
+    color:#111;
 
 }
 
@@ -185,6 +209,32 @@ body{
         25% 100%,
         0% 90%
     );
+
+}
+
+.vip-text{
+
+    writing-mode:vertical-rl;
+
+    font-weight:bold;
+
+    color:#111;
+
+}
+
+.vip-pax{
+
+    position:absolute;
+
+    bottom:0px;
+
+    font-size:13px;
+
+    font-weight:bold;
+
+    color:#111;
+
+    white-space:nowrap;
 
 }
 
@@ -267,117 +317,6 @@ body{
 }
 
 
-.table-1   { left:692px; top:681px; }
-.table-2   { left:692px; top:628px; }
-.table-3   { left:692px; top:577px; }
-.table-4   { left:692px; top:523px; }
-.table-5   { left:692px; top:473px; }
-.table-6   { left:692px; top:418px; }
-.table-7   { left:692px; top:345px; }
-.table-8   { left:692px; top:291px; }
-.table-9   { left:692px; top:241px; }
-.table-10  { left:692px; top:187px; }
-
-.table-11  { left:692px; top:136px; }
-.table-12  { left:692px; top:82px; }
-.table-13  { left:0px; top:0px; }
-.table-14  { left:0px; top:0px; }
-.table-15  { left:0px; top:0px; }
-.table-16  { left:0px; top:0px; }
-.table-17  { left:0px; top:0px; }
-.table-18  { left:0px; top:0px; }
-.table-19  { left:0px; top:0px; }
-.table-20  { left:0px; top:0px; }
-
-.table-21  { left:0px; top:0px; }
-.table-22  { left:0px; top:0px; }
-.table-23  { left:0px; top:0px; }
-.table-24  { left:627px; top:681px; }
-.table-25  { left:563px; top:681px; }
-.table-26  { left:0px; top:0px; }
-.table-27  { left:0px; top:0px; }
-.table-28  { left:0px; top:0px; }
-.table-29  { left:0px; top:0px; }
-.table-30  { left:0px; top:0px; }
-
-.table-31  { left:0px; top:0px; }
-.table-32  { left:0px; top:0px; }
-.table-33  { left:0px; top:0px; }
-.table-34  { left:0px; top:0px; }
-.table-35  { left:0px; top:0px; }
-.table-36  { left:0px; top:0px; }
-.table-37  { left:0px; top:0px; }
-.table-38  { left:0px; top:0px; }
-.table-39  { left:0px; top:0px; }
-.table-40  { left:0px; top:0px; }
-
-.table-41  { left:0px; top:0px; }
-.table-42  { left:0px; top:0px; }
-.table-43  { left:0px; top:0px; }
-.table-44  { left:0px; top:0px; }
-.table-45  { left:0px; top:0px; }
-.table-46  { left:0px; top:0px; }
-.table-47  { left:0px; top:0px; }
-.table-48  { left:494px; top:681px; }
-.table-49  { left:433px; top:681px; }
-.table-50  { left:0px; top:0px; }
-
-.table-51  { left:0px; top:0px; }
-.table-52  { left:0px; top:0px; }
-.table-53  { left:0px; top:0px; }
-.table-54  { left:0px; top:0px; }
-.table-55  { left:0px; top:0px; }
-.table-56  { left:0px; top:0px; }
-.table-57  { left:0px; top:0px; }
-.table-58  { left:0px; top:0px; }
-.table-59  { left:0px; top:0px; }
-.table-60  { left:0px; top:0px; }
-
-.table-61  { left:0px; top:0px; }
-.table-62  { left:0px; top:0px; }
-.table-63  { left:0px; top:0px; }
-.table-64  { left:0px; top:0px; }
-.table-65  { left:0px; top:0px; }
-.table-66  { left:0px; top:0px; }
-.table-67  { left:0px; top:0px; }
-.table-68  { left:0px; top:0px; }
-.table-69  { left:0px; top:0px; }
-.table-70  { left:0px; top:0px; }
-
-.table-71  { left:0px; top:0px; }
-.table-72  { left:375px; top:681px; }
-.table-73  { left:313px; top:681px; }
-.table-74  { left:0px; top:0px; }
-.table-75  { left:0px; top:0px; }
-.table-76  { left:0px; top:0px; }
-.table-77  { left:0px; top:0px; }
-.table-78  { left:0px; top:0px; }
-.table-79  { left:0px; top:0px; }
-.table-80  { left:0px; top:0px; }
-
-.table-81  { left:0px; top:0px; }
-.table-82  { left:0px; top:0px; }
-.table-83  { left:0px; top:0px; }
-.table-84  { left:0px; top:0px; }
-.table-85  { left:0px; top:0px; }
-.table-86  { left:0px; top:0px; }
-.table-87  { left:0px; top:0px; }
-.table-88  { left:0px; top:0px; }
-.table-89  { left:0px; top:0px; }
-.table-90  { left:0px; top:0px; }
-
-.table-91  { left:0px; top:0px; }
-.table-92  { left:0px; top:0px; }
-.table-93  { left:0px; top:0px; }
-.table-94  { left:0px; top:0px; }
-.table-95  { left:0px; top:0px; }
-.table-96  { left:247px; top:681px; }
-.table-97  { left:176px; top:452px; }
-.table-98  { left:176px; top:395px; }
-.table-99  { left:176px; top:339px; }
-.table-100 { left:176px; top:280px; }
-.table-101 { left:0px; top:0px; }
-
 </style>
 
 </head>
@@ -406,60 +345,173 @@ Floor Plan View
     style="left:769px;top:302px;"
     target="_blank">
 
-    <span style="writing-mode:vertical-rl">
+    <span class="vip-text">
 
         VIP
+
+    </span>
+
+    <span class="vip-pax">
+
+        {{
+            collect($classes)
+            ->where('class_code','DIAMOND1')
+            ->first()
+            ?->used_pax ?? 0
+        }}/7
 
     </span>
 
 </a>
 
     
-    <a
-        href="{{ url('admin/classes/SILVER1') }}"
-        class="table-dot silver"
-        style="left:692px;top:681px;" target="_blank">
-        1
-    </a>
-
-    @foreach($classes as $class)
-
     @php
 
-        $color = 'silver';
+$leftColumn = [
 
-        if(str_starts_with($class->class_code,'DIAMOND'))
-        {
-            $color = 'diamond';
-        }
-        elseif(str_starts_with($class->class_code,'PLATINUM'))
-        {
-            $color = 'platinum';
-        }
-        elseif(str_starts_with($class->class_code,'GOLD'))
-        {
-            $color = 'gold';
-        }
+    1  => 692,
+    13 => 627,
+    25 => 563,
+    37 => 494,
+    49 => 433,
+    61 => 375,
+    73 => 313,
+    85 => 247
 
-    @endphp
+];
 
-    @if($class->table_no != 'VIP')
+$topRow = [
 
-        <a
-            href="{{ url('admin/classes/'.$class->class_code) }}"
-            class="table-dot {{ $color }} table-{{ $class->table_no }}"
-            target="_blank">
+    1  => 681,
+    2  => 628,
+    3  => 577,
+    4  => 523,
+    5  => 473,
+    6  => 418,
+    7  => 345,
+    8  => 291,
+    9  => 241,
+    10 => 187,
+    11 => 136,
+    12 => 82
 
-            {{ $class->table_no }}
+];
 
-        </a>
+$posisi = [];
 
-    @endif
+/*
+|--------------------------------------------------------------------------
+| Meja 1 - 96
+|--------------------------------------------------------------------------
+*/
+
+foreach($leftColumn as $startTable => $left)
+{
+    for($i=0; $i<12; $i++)
+    {
+        $tableNo = $startTable + $i;
+
+        $posisi[$tableNo] = [
+
+            'left' => $left,
+
+            'top' => $topRow[$i + 1]
+
+        ];
+    }
+}
+
+/*
+|--------------------------------------------------------------------------
+| Meja 97 - 100 (tepi kiri)
+|--------------------------------------------------------------------------
+*/
+
+$posisi[97] = [
+
+    'left' => 176,
+    'top'  => 452
+
+];
+
+$posisi[98] = [
+
+    'left' => 176,
+    'top'  => 395
+
+];
+
+$posisi[99] = [
+
+    'left' => 176,
+    'top'  => 339
+
+];
+
+$posisi[100] = [
+
+    'left' => 176,
+    'top'  => 280
+
+];
+
+@endphp
+    
+
+@foreach($classes as $class)
+
+@php
+
+$tableNo = (int)$class->table_no;
+
+if(!isset($posisi[$tableNo]))
+{
+    continue;
+}
+
+$color = 'silver';
+
+if(str_starts_with($class->class_code,'DIAMOND'))
+{
+    $color = 'diamond';
+}
+elseif(str_starts_with($class->class_code,'PLATINUM'))
+{
+    $color = 'platinum';
+}
+elseif(str_starts_with($class->class_code,'GOLD'))
+{
+    $color = 'gold';
+}
+
+@endphp
+
+<a
+    href="{{ url('admin/classes/'.$class->class_code) }}"
+    class="table-dot {{ $color }}"
+    style="
+        left:{{ $posisi[$tableNo]['left'] }}px;
+        top:{{ $posisi[$tableNo]['top'] }}px;
+    "
+    target="_blank">
+
+    <div>
+
+        {{ $tableNo }}
+
+        <div class="pax-count">
+
+            {{ $class->used_pax }}
+            /
+            {{ $class->max_pax }}
+
+        </div>
+
+    </div>
+
+</a>
 
 @endforeach
-    
-
-    
 
     
 
