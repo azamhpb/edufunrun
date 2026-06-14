@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\KaunterQRController;
 use App\Http\Controllers\mejaclassController;
+use App\Exports\GalaDinnerExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 
@@ -1031,5 +1033,26 @@ Route::get('/guest-new/{id}/{adminName}', function($id, $adminName){
 /*
 |--------------------------------------------------------------------------
 | VIP CHECK-IN NOTIFICATION
+|--------------------------------------------------------------------------
+*/
+
+/*
+|--------------------------------------------------------------------------
+| EXPORT EXCEL ALL ATTENDANCE DATA AND CLASSES SUMMARY
+|--------------------------------------------------------------------------
+*/
+Route::get('/admin/export', function () {
+
+    return Excel::download(
+        new GalaDinnerExport,
+        'GalaDinnerSabah2026 ('.
+    now('Asia/Kuala_Lumpur')->format('d-m-Y h-i-A').').xlsx'
+    );
+
+});
+
+/*
+|--------------------------------------------------------------------------
+| EXPORT EXCEL ALL ATTENDANCE DATA AND CLASSES SUMMARY
 |--------------------------------------------------------------------------
 */
