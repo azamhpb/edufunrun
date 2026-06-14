@@ -63,7 +63,7 @@
 
         <div class="mb-3">
 
-            <label>Class</label>
+            <label>Class/Meja</label>
 
             <select
             name="class_code"
@@ -91,7 +91,9 @@
 
                         {{ $class->class_code }}
 
-                        ({{ $available }} lagi)
+                        - Meja {{ $class->table_no }}
+
+                        ({{ $used }}/{{ $class->max_pax }})
 
                         {{ $available <= 0 ? '- FULL' : '' }}
 
@@ -103,16 +105,7 @@
 
         </div>
 
-        <div class="mb-3">
 
-            <label>No Meja</label>
-
-            <input
-            type="text"
-            name="table_no"
-            class="form-control">
-
-        </div>
 
         <button
         class="btn btn-success">

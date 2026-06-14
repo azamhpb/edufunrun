@@ -90,68 +90,10 @@ Route::get('/admin/guest', function () {
 
 });
 
-Route::get('/admin/guest/create', function () {
-
-    $classes = DB::table('classes')
-        ->orderBy('class_code')
-        ->get();
-
-    return view(
-        'admin.guest_create',
-        compact('classes')
-    );
-
-});
-
-
-Route::post('/admin/guest/create', function (Request $request) {
 
 
 
-    $id = DB::table('guests')->insertGetId([
 
-        'nama' => $request->nama,
-
-        'company' => $request->company,
-
-        'phone_no' => $request->phone_no,
-
-        'class_code' => $request->class_code,
-
-        'table_no' => $request->table_no,
-
-        'qr_token' => 'GDS-'.strtoupper(Str::random(8)),
-
-        'checkin_status' => 'pending',
-
-        'created_at' => now('Asia/Kuala_Lumpur'),
-
-        'updated_at' => now('Asia/Kuala_Lumpur')
-
-    ]);
-
-    $attendanceId = 'GALADS-YA' . str_pad(
-        $id,
-        3,
-        '0',
-        STR_PAD_LEFT
-    );
-
-    DB::table('guests')
-        ->where('id', $id)
-        ->update([
-
-            'attendance_id' => $attendanceId
-
-        ]);
-
-    return redirect('/admin/guest')
-        ->with(
-            'success',
-            'Tetamu berjaya ditambah'
-        );
-
-});
 
 
 
@@ -187,27 +129,34 @@ Route::post('/admin/guest/create', function (Request $request) {
         STR_PAD_LEFT
     );
 
-    DB::table('guests')->insert([
+    $class = DB::table('classes')
+    ->where(
+        'class_code',
+        $request->class_code
+    )
+    ->first();
 
-        'attendance_id' => $attendanceId,
+    $id = DB::table('guests')->insertGetId([
 
-        'nama' => $request->nama,
+    'attendance_id' => $attendanceId,
 
-        'company' => $request->company,
+    'nama' => $request->nama,
 
-        'phone_no' => $request->phone_no,
+    'company' => $request->company,
 
-        'class_code' => $request->class_code,
+    'phone_no' => $request->phone_no,
 
-        'table_no' => $request->table_no,
+    'class_code' => $class->class_code,
 
-        'qr_token' => 'GDS-'.strtoupper(Str::random(8)),
+    'table_no' => $class->table_no,
 
-        'checkin_status' => 'pending',
+    'qr_token' => 'GDS-'.strtoupper(Str::random(8)),
 
-        'created_at' => now('Asia/Kuala_Lumpur'),
+    'checkin_status' => 'pending',
 
-        'updated_at' => now('Asia/Kuala_Lumpur')
+    'created_at' => now('Asia/Kuala_Lumpur'),
+
+    'updated_at' => now('Asia/Kuala_Lumpur')
 
     ]);
 
@@ -277,23 +226,30 @@ Route::post('/admin/guest/edit/{id}', function (
     $id
 ) {
 
-    DB::table('guests')
-        ->where('id',$id)
-        ->update([
+        $class = DB::table('classes')
+        ->where(
+            'class_code',
+            $request->class_code
+        )
+        ->first();
 
-            'nama' => $request->nama,
+        DB::table('guests')
+            ->where('id',$id)
+            ->update([
 
-            'company' => $request->company,
+                'nama' => $request->nama,
 
-            'phone_no' => $request->phone_no,
+                'company' => $request->company,
 
-            'class_code' => $request->class_code,
+                'phone_no' => $request->phone_no,
 
-            'table_no' => $request->table_no,
+                'class_code' => $class->class_code,
 
-            'updated_at' => now('Asia/Kuala_Lumpur')
+                'table_no' => $class->table_no,
 
-        ]);
+                'updated_at' => now('Asia/Kuala_Lumpur')
+
+            ]);
 
     return redirect('/admin/guest')
         ->with(

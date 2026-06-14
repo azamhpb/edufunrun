@@ -72,7 +72,7 @@ Guest New Registration
 </tr>
 
 <tr>
-<td><strong>Masa Check In</strong></td>
+<td><strong>Masa Create Guest</strong></td>
 <td>{{ now('Asia/Kuala_Lumpur')->format('d/m/Y h:i:s A') }}</td>
 </tr>
 

@@ -79,12 +79,12 @@ value="{{ $guest->company }}">
 
 <div class="mb-3">
 
-<label>Class</label>
+<label>Class/Meja</label>
 <div class="alert alert-info">
 
-Class Semasa:
+Class/Meja Semasa:
 
-<b>{{ $guest->class_code }}</b>
+<b>{{ $guest->class_code }}  / Meja : {{ $guest->table_no }}</b>
 
 </div>
 
@@ -122,7 +122,9 @@ value="{{ $class->class_code }}"
 
 {{ $class->class_code }}
 
-({{ $available }} lagi)
+- Meja {{ $class->table_no }}
+
+({{ $used }}/{{ $class->max_pax }})
 
 {{ $available <= 0 ? '- FULL' : '' }}
 
@@ -134,17 +136,7 @@ value="{{ $class->class_code }}"
 
 </div>
 
-<div class="mb-3">
 
-<label>No Meja</label>
-
-<input
-type="text"
-name="table_no"
-class="form-control"
-value="{{ $guest->table_no }}">
-
-</div>
 
 <button
 class="btn btn-success">
