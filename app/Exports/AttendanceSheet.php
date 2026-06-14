@@ -5,8 +5,12 @@ namespace App\Exports;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithTitle;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
-class AttendanceSheet implements FromArray, WithTitle
+class AttendanceSheet implements
+    FromArray,
+    WithTitle,
+    ShouldAutoSize
 {
     public function array(): array
     {

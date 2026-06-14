@@ -5,8 +5,12 @@ namespace App\Exports;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithTitle;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
-class GuestSheet implements FromArray, WithTitle
+class GuestSheet implements
+    FromArray,
+    WithTitle,
+    ShouldAutoSize
 {
     public function array(): array
     {
