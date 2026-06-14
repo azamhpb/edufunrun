@@ -47,6 +47,16 @@
 
     @endif
 
+    <a href="{{ url('admin/classes') }}">
+
+    Classes & Table Management
+
+    </a>
+
+    <a href="{{ url('admin/floorplan') }}">
+    Floor Plan View
+    </a>
+
     <a href="{{ url('admin/logout') }}">
         Logout
     </a>
