@@ -137,6 +137,16 @@ body{
 
     <hr>
 
+    @if(session('success'))
+
+    <div class="alert alert-success">
+
+        {{ session('success') }}
+
+    </div>
+
+    @endif
+
     <div class="card">
 
         <div class="card-header">
@@ -233,6 +243,14 @@ body{
                         </td>
 
                         <td>
+
+                            <a
+                            href="{{ url('admin/classes/edit/'.$class->id) }}"
+                            class="btn btn-warning btn-sm">
+
+                            Edit
+
+                            </a>
 
                             <a
                             href="{{ url('admin/classes/'.$class->class_code) }}"

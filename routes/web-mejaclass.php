@@ -121,3 +121,66 @@ Route::get('/admin/floorplan', function(){
     );
 
 });
+
+Route::get('/admin/classes/edit/{id}', function($id){
+
+    $class = DB::table('classes')
+        ->where('id',$id)
+        ->first();
+
+    return view(
+        'admin.class_edit',
+        compact('class')
+    );
+
+});
+
+Route::post('/admin/classes/edit/{id}', function(Request $request, $id){
+
+    DB::table('classes')
+        ->where('id',$id)
+        ->update([
+
+            'max_pax' => $request->max_pax
+
+        ]);
+
+    return redirect('/admin/classes')
+        ->with(
+            'success',
+            'Kapasiti berjaya dikemaskini'
+        );
+
+});
+
+
+Route::get('/admin/classes/edit/{id}', function($id){
+
+    $class = DB::table('classes')
+        ->where('id',$id)
+        ->first();
+
+    return view(
+        'admin.class_edit',
+        compact('class')
+    );
+
+});
+
+Route::post('/admin/classes/edit/{id}', function(Request $request, $id){
+
+    DB::table('classes')
+        ->where('id',$id)
+        ->update([
+
+            'max_pax' => $request->max_pax
+
+        ]);
+
+    return redirect('/admin/classes')
+        ->with(
+            'success',
+            'Kapasiti berjaya dikemaskini'
+        );
+
+});
