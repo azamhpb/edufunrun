@@ -298,6 +298,40 @@ body{
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
+.btn-google{
+
+    background:#4285F4;
+    color:white;
+
+    border:none;
+
+    padding:10px 20px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    margin-left:5px;
+
+}
+
+.btn-waze{
+
+    background:#33CCFF;
+    color:white;
+
+    border:none;
+
+    padding:10px 20px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    margin-left:5px;
+
+}
+
 /* ======================================================== */
 /* KOD FIX TERBARU: PENYELARASAN SAIZ HALAMAN SECARA TEPAT   */
 /* ======================================================== */
@@ -445,7 +479,7 @@ body{
         📅 Jadual Program
     </button>
     <button
-    onclick="window.open('https://maps.google.com/?q=Sabah+International+Convention+Centre','_blank')"
+    onclick="window.open('https://share.google/scWLf763xmFKE61B4','_blank')"
     class="btn-google">
 
         📍 Google Maps
