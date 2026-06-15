@@ -926,14 +926,26 @@ Route::get('/guest-checkin/{id}/{scanner}', function($id, $scanner){
 
             ],
 
-            function($mail) use ($guest){
+            function($mail) use ($guest, $setting){
 
                 $mail
-                    ->to('azamhpb@gmail.com')
-                    ->cc($setting->email_cc)
-                    ->bcc($setting->email_bcc)
+                    ->to(
+                        array_filter(
+                            explode(',', $setting->email_to )
+                        )
+                    )
+                    ->cc(
+                        array_filter(
+                            explode(',', $setting->email_cc ?? '')
+                        )
+                    )
+                    ->bcc(
+                    array_filter(
+                        explode(',', $setting->email_bcc ?? '')
+                    )
+                )
                     ->subject(
-                        '[VIP CHECK-IN] '.$guest->nama . ' (TIME ' . now('Asia/Kuala_Lumpur')->format('d/m/Y h:i A') . ')' . $setting->email_to
+                        '[VIP CHECK-IN] '.$guest->nama . ' (TIME ' . now('Asia/Kuala_Lumpur')->format('d/m/Y h:i A') . ')' 
                     );
 
             }
@@ -972,10 +984,10 @@ Route::get('/guest-checkin/{id}/{scanner}', function($id, $scanner){
         $response = @file_get_contents($api_url);
 
         
-
+    
 
     }
-
+    return 'OK';
 });
 
 
@@ -1006,7 +1018,7 @@ Route::get('/guest-new/{id}/{adminName}', function($id, $adminName){
 
         ],
 
-        function($mail) use ($guest){
+        function($mail) use ($guest, $setting){
 
             $mail
                 ->to(explode(',', $setting->email_to))
@@ -1040,7 +1052,7 @@ Route::get('/guest-new/{id}/{adminName}', function($id, $adminName){
 
         'api_key'      => 'e998433bf9918a7ea56479af11b106e43d587294e573741ed1b318163a6610e6',
         'action'       => 'send',
-        'to'           => '6'.preg_replace('/[^0-9]/','',$setting->admin_phone), // Gantikan dengan nombor admin
+        'to'           => preg_replace('/[^0-9]/','',$setting->admin_phone), // Gantikan dengan nombor admin
         'msg'          => $message,
         'sender_id'    => 'CLOUDSMS',
         'content_type' => '1',
