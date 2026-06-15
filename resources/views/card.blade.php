@@ -300,35 +300,41 @@ body{
 
 .btn-google{
 
-    background:#4285F4;
-    color:white;
-
-    border:none;
-
-    padding:10px 20px;
-
-    border-radius:8px;
-
-    cursor:pointer;
-
-    margin-left:5px;
+    background: linear-gradient(
+        135deg,
+        #673ab7, /* Ungu (Atas kiri) */
+        #4285f4, /* Biru (Atas kanan) */
+        #34a853, /* Hijau (Bawah kanan) */
+        #fbbc05, /* Kuning (Bawah kiri) */
+        #ea4335  /* Merah (Tengah kiri) */
+    );
+    color:black;
+    border: none;
+    padding: 15px 40px;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 
 }
 
 .btn-waze{
 
-    background:#33CCFF;
-    color:white;
-
-    border:none;
-
-    padding:10px 20px;
-
-    border-radius:8px;
-
-    cursor:pointer;
-
-    margin-left:5px;
+    background: linear-gradient(
+        135deg,
+        #33ccff, /* Biru Muda Waze */
+        #ffffff, /* Putih */
+        #000000  /* Hitam */
+    );
+    color:black;
+    border: none;
+    padding: 15px 40px;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 
 }
 
@@ -363,7 +369,13 @@ body{
 /* REKABENTUK POPUP MODAL KUSTOM (TANPA BOOTSTRAP)          */
 /* ======================================================== */
 .btn-schedule {
-    background: #013e6a; color: #fff; border: none;
+     background: linear-gradient(
+        135deg,
+        #1db954, /* Hijau Muda (Sisi Kiri) */
+        #0f9d58, /* Hijau Utama (Tengah) */
+        #107c41  /* Hijau Gelap (Sisi Kanan) */
+    );
+    color: #fff; border: none;
     padding: 15px 40px; font-size: 20px; font-weight: bold;
     border-radius: 50px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     margin-left: 15px; font-family: sans-serif;
