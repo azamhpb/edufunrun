@@ -45,6 +45,10 @@
             Export Excel
         </a>
 
+        <a href="{{ url('admin/settings') }}">
+            Settings
+        </a>
+
     @endif
 
     <a href="{{ url('admin/classes') }}">

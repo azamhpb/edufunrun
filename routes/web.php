@@ -211,9 +211,11 @@ Route::get('/admin/login', function () {
         return redirect('/admin/dashboard');
     }
 
+    
+
     return view('admin.login');
 
-});
+    });
 
 Route::get('/admin/login', function () {
 
@@ -652,6 +654,8 @@ Route::get('/admin/user/delete/{id}', function ($id) {
 
 Route::get('/c/{id}', function ($id) {
 
+    $setting = DB::table('settings')->first();
+
     $guest = DB::table('guests')
         ->where('qr_token',$id)
         ->first();
@@ -663,7 +667,7 @@ Route::get('/c/{id}', function ($id) {
 
     return view(
         'card',
-        compact('guest')
+        compact('guest','setting')
     );
 
 });
@@ -703,10 +707,15 @@ Route::get('/qr-guest/{id}', function ($id) {
 
 Route::get('/admin/attendance-management', function () {
 
-    if(!session('admin_id'))
-    {
-        return redirect('/');
-    }
+        if(!session('admin_id'))
+        {
+            return redirect('/');
+        }
+
+    if(session('admin_level') != 'superadmin')
+        {
+            abort(403);
+        }
 
     $attendance = DB::table('guest_attendance')
         ->join(
@@ -770,10 +779,15 @@ Route::get('/admin/attendance-management', function () {
 
 Route::post('/admin/attendance/undo/{id}', function ($id) {
 
-    if(!session('admin_id'))
-    {
-        return redirect('/');
-    }
+        if(!session('admin_id'))
+        {
+            return redirect('/');
+        }
+
+    if(session('admin_level') != 'superadmin')
+        {
+            abort(403);
+        }
 
     $attendance = DB::table('guest_attendance')
         ->where('id',$id)
@@ -829,10 +843,15 @@ Route::post('/admin/attendance/undo/{id}', function ($id) {
 
 Route::get('/admin/attendance-undo-logs', function () {
 
-    if(!session('admin_id'))
-    {
-        return redirect('/');
-    }
+        if(!session('admin_id'))
+        {
+            return redirect('/');
+        }
+
+    if(session('admin_level') != 'superadmin')
+        {
+            abort(403);
+        }
 
     $logs = DB::table('attendance_undo_logs')
         ->leftJoin(
@@ -874,6 +893,8 @@ Route::get('/admin/attendance-undo-logs', function () {
 
 Route::get('/guest-checkin/{id}/{scanner}', function($id, $scanner){
 
+    $setting = DB::table('settings')->first();
+
     $guest = DB::table('guests')
         ->where('id',$id)
         ->first();
@@ -908,8 +929,9 @@ Route::get('/guest-checkin/{id}/{scanner}', function($id, $scanner){
             function($mail) use ($guest){
 
                 $mail
-                    ->to('azam.yayasanangkasa@gmail.com')
-                    ->bcc('azamhpb@gmail.com')
+                    ->to(explode(',', $setting->email_to))
+                    ->cc(array_filter(explode(',', $setting->email_cc ?? '')))
+                    ->bcc(array_filter(explode(',', $setting->email_bcc ?? '')))
                     ->subject(
                         '[VIP CHECK-IN] '.$guest->nama . ' (TIME ' . now('Asia/Kuala_Lumpur')->format('d/m/Y h:i A') . ')'
                     );
@@ -938,7 +960,7 @@ Route::get('/guest-checkin/{id}/{scanner}', function($id, $scanner){
 
             'api_key'      => 'e998433bf9918a7ea56479af11b106e43d587294e573741ed1b318163a6610e6',
             'action'       => 'send',
-            'to'           => '60127743756', // Gantikan dengan nombor admin
+            'to' => preg_replace('/[^0-9]/','',$setting->admin_phone), // Gantikan dengan nombor admin
             'msg'          => $message,
             'sender_id'    => 'CLOUDSMS',
             'content_type' => '1',
@@ -958,6 +980,8 @@ Route::get('/guest-checkin/{id}/{scanner}', function($id, $scanner){
 
 
 Route::get('/guest-new/{id}/{adminName}', function($id, $adminName){
+
+    $setting = DB::table('settings')->first();
 
     $guest = DB::table('guests')
         ->where('attendance_id',$id)
@@ -985,8 +1009,9 @@ Route::get('/guest-new/{id}/{adminName}', function($id, $adminName){
         function($mail) use ($guest){
 
             $mail
-                ->to('azam.yayasanangkasa@gmail.com')
-                ->bcc('azamhpb@gmail.com')
+                ->to(explode(',', $setting->email_to))
+                ->cc(array_filter(explode(',', $setting->email_cc ?? '')))
+                ->bcc(array_filter(explode(',', $setting->email_bcc ?? '')))
                 ->subject(
                     '[NEW GUEST] '.$guest->nama.
                     ' ('.now('Asia/Kuala_Lumpur')->format('d/m/Y h:i A').')'
@@ -1015,7 +1040,7 @@ Route::get('/guest-new/{id}/{adminName}', function($id, $adminName){
 
         'api_key'      => 'e998433bf9918a7ea56479af11b106e43d587294e573741ed1b318163a6610e6',
         'action'       => 'send',
-        'to'           => '60127743756',
+        'to' => preg_replace('/[^0-9]/','',$setting->admin_phone), // Gantikan dengan nombor admin
         'msg'          => $message,
         'sender_id'    => 'CLOUDSMS',
         'content_type' => '1',
@@ -1043,6 +1068,16 @@ Route::get('/guest-new/{id}/{adminName}', function($id, $adminName){
 */
 Route::get('/admin/export', function () {
 
+    if(!session('admin_id'))
+        {
+            return redirect('/');
+        }
+
+    if(session('admin_level') != 'superadmin')
+        {
+            abort(403);
+        }
+
     return Excel::download(
         new GalaDinnerExport,
         'GalaDinnerSabah2026 ('.
@@ -1056,3 +1091,4 @@ Route::get('/admin/export', function () {
 | EXPORT EXCEL ALL ATTENDANCE DATA AND CLASSES SUMMARY
 |--------------------------------------------------------------------------
 */
+

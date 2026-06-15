@@ -411,10 +411,11 @@ body{
 
         @if($guest->table_no)
 
+        @if($guest->checkin_status == 'checked_in')
         &nbsp; | &nbsp;
 
         MEJA {{ $guest->table_no }}
-
+        @endif
         @endif
 
     </div>
@@ -453,40 +454,7 @@ body{
             <button class="custom-modal-close" onclick="closeModal()">&times;</button>
         </div>
         <div class="custom-modal-body">
-            <table class="custom-table">
-                <thead>
-                    <tr>
-                        <th style="width: 30%">Masa</th>
-                        <th>Agenda / Aktiviti</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="time-col">07:00 MLM</td>
-                        <td>Ketibaan Para Jemputan & Pendaftaran Tetamu</td>
-                    </tr>
-                    <tr>
-                        <td class="time-col">07:30 MLM</td>
-                        <td>Ketibaan Tetamu Kehormat</td>
-                    </tr>
-                    <tr>
-                        <td class="time-col">07:45 MLM</td>
-                        <td>Bacaan Doa & Ucapan Aluan Pembukaan Majlis</td>
-                    </tr>
-                    <tr>
-                        <td class="time-col">08:00 MLM</td>
-                        <td>Acara Makan Malam Bermula & Persembahan Multimedia</td>
-                    </tr>
-                    <tr>
-                        <td class="time-col">09:00 MLM</td>
-                        <td>Penyampaian Anugerah & Cabutan Bertuah</td>
-                    </tr>
-                    <tr>
-                        <td class="time-col">10:30 MLM</td>
-                        <td>Sesi Bergambar & Bersurai</td>
-                    </tr>
-                </tbody>
-            </table>
+            {!! $setting->gala_program !!}
         </div>
         <div class="custom-modal-footer">
             <button class="btn-close-modal" onclick="closeModal()">Tutup</button>
