@@ -26,11 +26,12 @@ elseif(str_starts_with($guest->class_code,'SILVER'))
 
 <head>
 
+
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="https://yayasanangkasa.coop/images/logo%20yayasan%20angkasa%202018%201to1.png">
 <title>{{ $guest->nama }} | Kad Jemputan Gala Dinner Sabah 2026 Yayasan ANGKASA</title>
 
-
+<meta name="description" content="Kad Jemputan Digital Gala Dinner Sabah 2026. Sila tunjukkan QR Code ini semasa pendaftaran dan kehadiran majlis.">
 
 <style>
 

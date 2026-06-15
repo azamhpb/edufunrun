@@ -7,6 +7,29 @@
 <link rel="icon" type="image/png" href="https://yayasanangkasa.coop/images/logo%20yayasan%20angkasa%202018%201to1.png">
 <meta name="viewport"
 content="width=device-width, initial-scale=1">
+<meta name="description" content="Portal Rasmi Gala Dinner Sabah 2026 anjuran Yayasan ANGKASA. Semak jemputan, nombor meja, aturcara majlis, lokasi dan maklumat terkini acara.">
+
+<meta name="keywords" content="Gala Dinner Sabah 2026, Yayasan ANGKASA, Makan Malam Gala, Sabah, Jemputan, QR Attendance, Check In Tetamu">
+
+<meta name="author" content="Yayasan ANGKASA">
+
+<meta property="og:title" content="Gala Dinner Sabah 2026">
+
+<meta property="og:description" content="Portal Rasmi Gala Dinner Sabah 2026. Semak maklumat jemputan, nombor meja, aturcara majlis dan lokasi acara.">
+
+<meta property="og:type" content="website">
+
+<meta property="og:image" content="{{ asset('img/logo-gala.png') }}">
+
+<meta property="og:url" content="{{ url()->current() }}">
+
+<meta name="twitter:card" content="summary_large_image">
+
+<meta name="twitter:title" content="Gala Dinner Sabah 2026">
+
+<meta name="twitter:description" content="Portal Rasmi Gala Dinner Sabah 2026 anjuran Yayasan ANGKASA.">
+
+<meta name="twitter:image" content="{{ asset('img/logo-gala.png') }}">
 
 <title>
 

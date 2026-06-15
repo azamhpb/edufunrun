@@ -7,7 +7,7 @@
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="icon" type="image/png" href="https://yayasanangkasa.coop/images/logo%20yayasan%20angkasa%202018%201to1.png">
-
+<meta name="description" content="Sistem Pengurusan Kehadiran Gala Dinner Sabah 2026. Pengurusan tetamu, meja, QR Check-In dan laporan kehadiran.">
 <style>
 body{
 
