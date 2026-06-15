@@ -444,6 +444,20 @@ body{
     <button onclick="openModal()" class="btn-schedule">
         📅 Jadual Program
     </button>
+    <button
+    onclick="window.open('https://maps.google.com/?q=Sabah+International+Convention+Centre','_blank')"
+    class="btn-google">
+
+        📍 Google Maps
+
+    </button>
+    <button
+    onclick="window.open('https://waze.com/ul?q=Sabah+International+Convention+Centre','_blank')"
+    class="btn-waze">
+
+        🚗 Waze
+
+    </button>
 </div>
 
 <!-- POPUP MODAL ATURCARA KUSTOM -->
