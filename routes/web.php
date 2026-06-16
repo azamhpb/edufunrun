@@ -965,14 +965,14 @@ Route::get('/guest-checkin/{id}/{scanner}', function($id, $scanner){
         "Scanner: ".$scanner."\n\n".
         "Masa:\n".
         now('Asia/Kuala_Lumpur')->format('d/m/Y h:i A');
-
+        $phoneadmin = preg_replace('/[^0-9]/','',$setting->admin_phone);
         $api_url =
         "http://cloudsms.trio-mobile.com/index.php/api/bulk_mt?".
         http_build_query([
 
             'api_key'      => 'e998433bf9918a7ea56479af11b106e43d587294e573741ed1b318163a6610e6',
             'action'       => 'send',
-            'to'            => preg_replace('/[^0-9]/','',$setting->admin_phone), // Gantikan dengan nombor admin
+            'to'            => '6'.$phoneadmin, // Gantikan dengan nombor admin
             'msg'          => $message,
             'sender_id'    => 'CLOUDSMS',
             'content_type' => '1',
@@ -987,7 +987,7 @@ Route::get('/guest-checkin/{id}/{scanner}', function($id, $scanner){
     
 
     }
-    return 'OK';
+    return 'OK '.$response;
 });
 
 
@@ -1046,13 +1046,15 @@ Route::get('/guest-new/{id}/{adminName}', function($id, $adminName){
     "Masa:\n".
     now('Asia/Kuala_Lumpur')->format('d/m/Y h:i A');
 
+    $phoneadmin = preg_replace('/[^0-9]/','',$setting->admin_phone);
+
     $api_url =
     "http://cloudsms.trio-mobile.com/index.php/api/bulk_mt?".
     http_build_query([
 
         'api_key'      => 'e998433bf9918a7ea56479af11b106e43d587294e573741ed1b318163a6610e6',
         'action'       => 'send',
-        'to'           => preg_replace('/[^0-9]/','',$setting->admin_phone), // Gantikan dengan nombor admin
+        'to'           => '6'.$phoneadmin, // Gantikan dengan nombor admin
         'msg'          => $message,
         'sender_id'    => 'CLOUDSMS',
         'content_type' => '1',
@@ -1061,9 +1063,9 @@ Route::get('/guest-new/{id}/{adminName}', function($id, $adminName){
 
     ]);
 
-    @file_get_contents($api_url);
+    $response = @file_get_contents($api_url);
 
-    return 'OK';
+    return 'OK'.$response ;
 
 });
 
