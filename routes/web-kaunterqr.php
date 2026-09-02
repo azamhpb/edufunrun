@@ -342,7 +342,7 @@ Route::get('/guest-dashboard-data', function () {
 
 Route::get('/test-print', function () {
 
-    $host = '192.168.0.32';
+    $host = '175.143.51.17';
     $port = 9100;
 
     $client = @fsockopen(
