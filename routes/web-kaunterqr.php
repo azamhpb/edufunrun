@@ -161,6 +161,15 @@ Route::post('/guest-scan/{scanner_id}', function (
 
         ]);
 
+    DB::table('print_jobs')->insert([
+    'print_data' =>
+        strtoupper($guest->nama) . "\n" .
+        strtoupper($guest->company ?? '') . "\n" .
+        'BAJU : ' . $guest->table_no,
+    'status' => 'pending',
+    'created_at' => now()
+]);    
+
     DB::table('scan_logs')->insert([
 
         'guest_id' => $guest->id,
