@@ -510,6 +510,19 @@ Route::get('/guest-print/{attendance_id}', function ($attendance_id) {
     }
 
 
+    // CHECK JIKA ATTENDANCE SUDAH PERNAH PRINT
+    $alreadyPrinted = DB::table('print_jobs')
+        ->where('attendance_id', $attendance_id)
+        ->exists();
+
+    if ($alreadyPrinted) {
+        return response()->json([
+            'success' => true,
+            'message' => 'Guest sudah dihantar untuk print'
+        ]);
+    }
+
+
     /*
     |--------------------------------------------------------------------------
     | CREATE PRINT JOB
