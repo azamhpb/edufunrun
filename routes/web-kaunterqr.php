@@ -494,8 +494,7 @@ Route::get('/api/print-job', function () {
 
     if (!$job) {
         return response()->json([
-            'success' => false,
-            'message' => 'No pending job'
+            'success' => false
         ]);
     }
 
@@ -503,5 +502,21 @@ Route::get('/api/print-job', function () {
         'success' => true,
         'id' => $job->id,
         'print_data' => $job->print_data
+    ]);
+});
+
+
+Route::get('/api/print-job/{id}/done', function ($id) {
+
+    DB::table('print_jobs')
+        ->where('id', $id)
+        ->where('status', 'pending')
+        ->update([
+            'status' => 'printed',
+            'printed_at' => now()
+        ]);
+
+    return response()->json([
+        'success' => true
     ]);
 });
