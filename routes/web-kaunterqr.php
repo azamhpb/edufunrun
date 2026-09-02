@@ -557,10 +557,11 @@ Route::get('/guest-print/{attendance_id}', function ($attendance_id) {
 
 
     $jobId = DB::table('print_jobs')->insertGetId([
-        'print_data' => $printData,
-        'status' => 'pending',
-        'created_at' => now()
-    ]);
+    'attendance_id' => $attendance_id,
+    'print_data' => $printData,
+    'status' => 'pending',
+    'created_at' => now()
+]);
 
 
     return response()->json([
