@@ -569,11 +569,11 @@ $printData =
     $tarikhMasa .
     '"' . "\r\n" .
 
-    'TEXT 100,270,"3",0,1,1,"PLATFORM : ' .
+    'TEXT 100,360,"3",0,1,1,"CLASS : ' .
     $class .
     '"' . "\r\n" .
 
-    'TEXT 100,360,"2",0,1,1,"SCANNER : ' .
+    'TEXT 100,390,"2",0,1,1,"SCANNER : ' .
     $scanner .
     '"' . "\r\n" .
 
