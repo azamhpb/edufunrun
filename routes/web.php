@@ -824,11 +824,7 @@ Route::post('/admin/attendance/undo/{id}', function ($id) {
         )
         ->update([
 
-            'checkin_status' => 'pending',
-
-            'checkin_time' => null,
-
-            'updated_at' => now('Asia/Kuala_Lumpur')
+            'checkin_status' => 'pending'
 
         ]);
 

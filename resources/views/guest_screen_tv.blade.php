@@ -365,6 +365,40 @@ function loadData(){
 
         /*
         |--------------------------------------------------------------------------
+        | PRINT GUEST
+        |--------------------------------------------------------------------------
+        */
+
+        fetch(
+
+            '{{ url("guest-print") }}/' +
+            data.attendance_id
+
+        )
+
+        .then(response => response.json())
+
+        .then(printData => {
+
+            console.log(
+                'Print:',
+                printData.message
+            );
+
+        })
+
+        .catch(error => {
+
+            console.error(
+                'Print error:',
+                error
+            );
+
+        });
+
+
+        /*
+        |--------------------------------------------------------------------------
         | Paparkan Guest
         |--------------------------------------------------------------------------
         */
@@ -392,7 +426,7 @@ function loadData(){
 
                 <div class="info fade">
 
-                    BAJU :  ${data.table_no}
+                    BAJU : ${data.table_no}
 
                 </div>
 
@@ -411,6 +445,18 @@ function loadData(){
     });
 
 }
+
+
+loadData();
+
+
+setInterval(
+
+    loadData,
+
+    2000
+
+);
 
 
 loadData();

@@ -338,3 +338,115 @@ Route::get('/guest-dashboard-data', function () {
 |--------------------------------------------------------------------------
 */
 
+
+
+Route::get('/test-print', function () {
+
+    $fp = fsockopen(
+        '192.168.0.32',
+        9100,
+        $errno,
+        $errstr,
+        5
+    );
+
+    if (!$fp) {
+        return 'Printer gagal connect: ' . $errstr;
+    }
+
+    $cmd =
+        "SIZE 80 mm,60 mm\r\n" .
+        "GAP 2 mm,0 mm\r\n" .
+        "CLS\r\n" .
+        'TEXT 100,100,"3",0,1,1,"TEST LARAVEL"' . "\r\n" .
+        'TEXT 100,160,"3",0,1,1,"AHMAD BIN ALI"' . "\r\n" .
+        'TEXT 100,220,"3",0,1,1,"MEJA 25"' . "\r\n" .
+        "PRINT 1,1\r\n";
+
+    fwrite($fp, $cmd);
+
+    fclose($fp);
+
+    return 'PRINT LARAVEL DIHANTAR';
+});
+
+
+Route::get('/guest-print/{attendance_id}', function ($attendance_id) {
+
+    $attendance = DB::table('guest_attendance')
+        ->where('id', $attendance_id)
+        ->first();
+
+    if (!$attendance) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Attendance tidak dijumpai'
+        ]);
+    }
+
+    $guest = DB::table('guests')
+        ->where('id', $attendance->guest_id)
+        ->first();
+
+    if (!$guest) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Guest tidak dijumpai'
+        ]);
+    }
+
+
+    $fp = fsockopen(
+        '192.168.0.32',
+        9100,
+        $errno,
+        $errstr,
+        5
+    );
+
+    if (!$fp) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Printer gagal connect: ' . $errstr
+        ]);
+    }
+
+
+    $nama = strtoupper($guest->nama);
+    $company = strtoupper($guest->company ?? '');
+    $meja = $guest->table_no;
+
+
+    $cmd =
+        "SIZE 80 mm,60 mm\r\n" .
+        "GAP 2 mm,0 mm\r\n" .
+        "CLS\r\n" .
+
+        'TEXT 100,60,"3",0,1,1,"EDU FUN RUN 4.0"' . "\r\n" .
+
+        'TEXT 100,130,"3",0,1,1,"' .
+        $nama .
+        '"' . "\r\n" .
+
+        'TEXT 100,200,"3",0,1,1,"' .
+        $company .
+        '"' . "\r\n" .
+
+        'TEXT 100,270,"3",0,1,1,"BAJU : ' .
+        $meja .
+        '"' . "\r\n" .
+
+        "PRINT 1,1\r\n";
+
+
+    fwrite($fp, $cmd);
+
+    fclose($fp);
+
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Print dihantar'
+    ]);
+
+});
