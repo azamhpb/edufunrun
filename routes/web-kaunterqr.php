@@ -462,3 +462,24 @@ Route::get('/guest-print/{attendance_id}', function ($attendance_id) {
     ]);
 
 });
+
+
+Route::get('/test-chrome-print', function () {
+    return view('test-chrome-print');
+});
+
+
+Route::get('/test-print-job', function () {
+
+    $id = DB::table('print_jobs')->insertGetId([
+        'print_data' => 'SERVER TEST',
+        'status' => 'pending',
+        'created_at' => now()
+    ]);
+
+    return response()->json([
+        'success' => true,
+        'job_id' => $id,
+        'message' => 'Print job created'
+    ]);
+});
