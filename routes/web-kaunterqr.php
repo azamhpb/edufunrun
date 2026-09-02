@@ -343,7 +343,7 @@ Route::get('/guest-dashboard-data', function () {
 Route::get('/test-print', function () {
 
     $fp = fsockopen(
-        '192.168.0.32',
+        '175.143.51.17',
         9100,
         $errno,
         $errstr,
@@ -397,7 +397,7 @@ Route::get('/guest-print/{attendance_id}', function ($attendance_id) {
 
 
     $fp = fsockopen(
-        '192.168.0.32',
+        '175.143.51.17',
         9100,
         $errno,
         $errstr,
