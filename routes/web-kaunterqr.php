@@ -483,3 +483,25 @@ Route::get('/test-print-job', function () {
         'message' => 'Print job created'
     ]);
 });
+
+
+Route::get('/api/print-job', function () {
+
+    $job = DB::table('print_jobs')
+        ->where('status', 'pending')
+        ->orderBy('id')
+        ->first();
+
+    if (!$job) {
+        return response()->json([
+            'success' => false,
+            'message' => 'No pending job'
+        ]);
+    }
+
+    return response()->json([
+        'success' => true,
+        'id' => $job->id,
+        'print_data' => $job->print_data
+    ]);
+});
