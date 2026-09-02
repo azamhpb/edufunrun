@@ -298,12 +298,45 @@ let lastScanned = '';
 
 let lastScanTime = 0;
 
+let pendingScan = '';
+
+let pendingScanCount = 0;
+
 const cooldown = 5000;
 
 function onScanSuccess(decodedText)
 {
 
     const now = Date.now();
+
+    decodedText = decodedText.trim();
+
+    /*
+    |--------------------------------------------------------------------------
+    | Pastikan QR yang sama dibaca 2 kali
+    |--------------------------------------------------------------------------
+    */
+
+    if(decodedText === pendingScan)
+    {
+        pendingScanCount++;
+    }
+    else
+    {
+        pendingScan = decodedText;
+        pendingScanCount = 1;
+    }
+
+    if(pendingScanCount < 2)
+    {
+        return;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Elak scan sama berulang
+    |--------------------------------------------------------------------------
+    */
 
     if(
         decodedText === lastScanned &&
@@ -322,6 +355,10 @@ function onScanSuccess(decodedText)
     lastScanned = decodedText;
 
     lastScanTime = now;
+
+    pendingScan = '';
+
+    pendingScanCount = 0;
 
     document
     .getElementById('beep')
