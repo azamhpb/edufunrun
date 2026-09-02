@@ -288,29 +288,7 @@ Route::post('/guest-scan/{scanner_id}', function (
     }
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | Diamond / Platinum
-    |--------------------------------------------------------------------------
-    */
-
-    if(
-        str_starts_with($guest->class_code,'DIAMOND')
-        ||
-        str_starts_with($guest->class_code,'PLATINUM')
-    )
-    {
-
-        @file_get_contents(
-            url(
-                'guest-checkin/' .
-                $guest->id . '/' .
-                $scanner_id
-            )
-        );
-
-    }
-
+    
 
     /*
     |--------------------------------------------------------------------------
