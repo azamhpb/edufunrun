@@ -370,31 +370,26 @@ function loadData(){
         */
 
         fetch(
+    '{{ url("guest-print") }}/' +
+    data.attendance_id
+)
+.then(response => response.json())
+.then(printData => {
 
-            '{{ url("guest-print") }}/' +
-            data.attendance_id
+    console.log(
+        'Print:',
+        printData.message
+    );
 
-        )
+})
+.catch(error => {
 
-        .then(response => response.json())
+    console.error(
+        'Print error:',
+        error
+    );
 
-        .then(printData => {
-
-            console.log(
-                'Print:',
-                printData.message
-            );
-
-        })
-
-        .catch(error => {
-
-            console.error(
-                'Print error:',
-                error
-            );
-
-        });
+});
 
 
         /*
