@@ -532,28 +532,47 @@ Route::get('/guest-print/{attendance_id}', function ($attendance_id) {
     $nama = strtoupper($guest->nama);
     $company = strtoupper($guest->company ?? '');
     $meja = $guest->table_no;
+    $scanner = $attendance->scanner_id;
+
+    date_default_timezone_set('Asia/Kuala_Lumpur');
+
+    $tarikhMasa = date('d/m/Y H:i:s');
 
 
-    $printData =
-        "SIZE 80 mm,60 mm\r\n" .
-        "GAP 2 mm,0 mm\r\n" .
-        "CLS\r\n" .
+    date_default_timezone_set('Asia/Kuala_Lumpur');
 
-        'TEXT 100,60,"3",0,1,1,"EDU FUN RUN 4.0"' . "\r\n" .
+$tarikhMasa = date('d/m/Y H:i:s');
+$scanner = $attendance->scanner_id;
 
-        'TEXT 100,130,"3",0,1,1,"' .
-        $nama .
-        '"' . "\r\n" .
 
-        'TEXT 100,200,"3",0,1,1,"' .
-        $company .
-        '"' . "\r\n" .
+$printData =
+    "SIZE 80 mm,60 mm\r\n" .
+    "GAP 2 mm,0 mm\r\n" .
+    "CLS\r\n" .
 
-        'TEXT 100,270,"3",0,1,1,"BAJU : ' .
-        $meja .
-        '"' . "\r\n" .
+    'TEXT 100,60,"3",0,1,1,"EDU FUN RUN 4.0"' . "\r\n" .
 
-        "PRINT 1,1\r\n";
+    'TEXT 100,130,"3",0,1,1,"' .
+    $nama .
+    '"' . "\r\n" .
+
+    'TEXT 100,200,"3",0,1,1,"' .
+    $company .
+    '"' . "\r\n" .
+
+    'TEXT 100,270,"3",0,1,1,"BAJU : ' .
+    $meja .
+    '"' . "\r\n" .
+
+    'TEXT 100,330,"2",0,1,1,"' .
+    $tarikhMasa .
+    '"' . "\r\n" .
+
+    'TEXT 100,360,"2",0,1,1,"SCANNER : ' .
+    $scanner .
+    '"' . "\r\n" .
+
+    "PRINT 1,1\r\n";
 
 
     $jobId = DB::table('print_jobs')->insertGetId([
