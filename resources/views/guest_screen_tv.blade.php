@@ -392,7 +392,7 @@ function loadData(){
 
                 <div class="info fade">
 
-                    MEJA ${data.table_no}
+                    BAJU :  ${data.table_no}
 
                 </div>
 
