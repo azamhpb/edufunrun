@@ -306,10 +306,12 @@ const cooldown = 5000;
 
 function onScanSuccess(decodedText)
 {
-
     const now = Date.now();
 
     decodedText = decodedText.trim();
+
+    console.log('QR DIBACA:', JSON.stringify(decodedText));
+
 
     /*
     |--------------------------------------------------------------------------
