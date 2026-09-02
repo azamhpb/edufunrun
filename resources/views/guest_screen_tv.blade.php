@@ -248,7 +248,7 @@ body{
 <script>
 
 
-let lastAttendanceId = 0;
+let lastAttendanceId = localStorage.getItem('lastAttendanceId_{{ $scanner_id }}') || 0;
 
 
 /*
@@ -359,8 +359,12 @@ function loadData(){
 
 
         lastAttendanceId =
-
             data.attendance_id;
+
+        localStorage.setItem(
+            'lastAttendanceId_{{ $scanner_id }}',
+            data.attendance_id
+        );
 
 
         /*
@@ -454,16 +458,7 @@ setInterval(
 );
 
 
-loadData();
 
-
-setInterval(
-
-    loadData,
-
-    2000
-
-);
 
 
 </script>
