@@ -548,10 +548,10 @@ $scanner = $attendance->scanner_id;
 
 $printData =
     "SIZE 80 mm,60 mm\r\n" .
-    "GAP 2 mm,0 mm\r\n" .
+    "GAP 1 mm,0 mm\r\n" .
     "CLS\r\n" .
 
-    'TEXT 100,60,"3",0,1,1,"EDU FUN RUN 4.0"' . "\r\n" .
+    'TEXT 100,60,"3",0,1,1,"EDU FUN RUN 4.0 2026"' . "\r\n" .
 
     'TEXT 100,130,"3",0,1,1,"' .
     $nama .
@@ -569,7 +569,7 @@ $printData =
     $tarikhMasa .
     '"' . "\r\n" .
 
-    'TEXT 100,360,"3",0,1,1,"CLASS : ' .
+    'TEXT 100,360,"3",0,1,1,"PLATFORM : ' .
     $class .
     '"' . "\r\n" .
 
