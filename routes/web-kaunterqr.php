@@ -19,17 +19,6 @@ use App\Http\Controllers\mejaclassController;
 */
 
 
-
-Route::get('/guest_scanner/{scanner_id}', function ($scanner_id) {
-
-    return view(
-        'guest_scanner',
-        compact('scanner_id')
-    );
-
-});
-
-
 Route::post('/guest-scan/{scanner_id}', function (
     Request $request,
     $scanner_id
@@ -37,123 +26,35 @@ Route::post('/guest-scan/{scanner_id}', function (
 
     $qrCode = trim($request->qr_code);
 
-    /*
-    |--------------------------------------------------------------------------
-    | Cari Guest
-    |--------------------------------------------------------------------------
-    */
-
     $guest = DB::table('guests')
         ->where('qr_token', $qrCode)
         ->first();
 
-    if (!$guest)
-    {
-
-        /*
-        |--------------------------------------------------------------------------
-        | Log INVALID - jangan biarkan log menyebabkan scan gagal
-        |--------------------------------------------------------------------------
-        */
-
-        try {
-
-            DB::table('scan_logs')->insert([
-
-                'guest_id' => 0,
-
-                'scanner_id' => $scanner_id,
-
-                'qr_token' => $qrCode,
-
-                'scan_result' => 'INVALID',
-
-                'scan_time' => now('Asia/Kuala_Lumpur'),
-
-                'created_at' => now('Asia/Kuala_Lumpur'),
-
-                'updated_at' => now('Asia/Kuala_Lumpur')
-
-            ]);
-
-        } catch (\Throwable $e) {
-
-            \Log::error(
-                'SCAN LOG INVALID ERROR: ' . $e->getMessage()
-            );
-
-        }
+    if (!$guest) {
 
         return response()->json([
-
             'success' => false,
-
             'message' => 'QR Tidak Sah'
-
         ]);
-
     }
 
 
     /*
     |--------------------------------------------------------------------------
-    | Check Duplicate
+    | CHECK DUPLICATE
     |--------------------------------------------------------------------------
     */
 
     $already = DB::table('guest_attendance')
-        ->where(
-            'guest_id',
-            $guest->id
-        )
+        ->where('guest_id', $guest->id)
         ->exists();
 
-    if($already)
-    {
+    if ($already) {
 
         $lastScan = DB::table('guest_attendance')
-            ->where(
-                'guest_id',
-                $guest->id
-            )
+            ->where('guest_id', $guest->id)
             ->orderByDesc('id')
             ->first();
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Log DUPLICATE
-        |--------------------------------------------------------------------------
-        */
-
-        try {
-
-            DB::table('scan_logs')->insert([
-
-                'guest_id' => $guest->id,
-
-                'scanner_id' => $scanner_id,
-
-                'qr_token' => $guest->qr_token,
-
-                'scan_result' => 'DUPLICATE',
-
-                'scan_time' => now('Asia/Kuala_Lumpur'),
-
-                'created_at' => now('Asia/Kuala_Lumpur'),
-
-                'updated_at' => now('Asia/Kuala_Lumpur')
-
-            ]);
-
-        } catch (\Throwable $e) {
-
-            \Log::error(
-                'SCAN LOG DUPLICATE ERROR: ' . $e->getMessage()
-            );
-
-        }
-
 
         return response()->json([
 
@@ -179,7 +80,6 @@ Route::post('/guest-scan/{scanner_id}', function (
             )
 
         ]);
-
     }
 
 
@@ -206,7 +106,7 @@ Route::post('/guest-scan/{scanner_id}', function (
 
     /*
     |--------------------------------------------------------------------------
-    | UPDATE CHECK-IN
+    | UPDATE GUEST
     |--------------------------------------------------------------------------
     */
 
@@ -214,18 +114,14 @@ Route::post('/guest-scan/{scanner_id}', function (
         ->where('id', $guest->id)
         ->update([
 
-            'checkin_status' => 'checked_in',
-
-            'checkin_time' => now('Asia/Kuala_Lumpur'),
-
-            'updated_at' => now('Asia/Kuala_Lumpur')
+            'checkin_status' => 'checked_in'
 
         ]);
 
 
     /*
     |--------------------------------------------------------------------------
-    | CREATE PRINT JOB
+    | PRINT JOB
     |--------------------------------------------------------------------------
     */
 
@@ -255,43 +151,6 @@ Route::post('/guest-scan/{scanner_id}', function (
 
     /*
     |--------------------------------------------------------------------------
-    | Log SUCCESS
-    |--------------------------------------------------------------------------
-    */
-
-    try {
-
-        DB::table('scan_logs')->insert([
-
-            'guest_id' => $guest->id,
-
-            'scanner_id' => $scanner_id,
-
-            'qr_token' => $guest->qr_token,
-
-            'scan_result' => 'SUCCESS',
-
-            'scan_time' => now('Asia/Kuala_Lumpur'),
-
-            'created_at' => now('Asia/Kuala_Lumpur'),
-
-            'updated_at' => now('Asia/Kuala_Lumpur')
-
-        ]);
-
-    } catch (\Throwable $e) {
-
-        \Log::error(
-            'SCAN LOG SUCCESS ERROR: ' . $e->getMessage()
-        );
-
-    }
-
-
-    
-
-    /*
-    |--------------------------------------------------------------------------
     | SUCCESS
     |--------------------------------------------------------------------------
     */
@@ -311,8 +170,6 @@ Route::post('/guest-scan/{scanner_id}', function (
     ]);
 
 });
-
-
 
 Route::get('/guest_screen_tv/{scanner_id}', function ($scanner_id) {
 
