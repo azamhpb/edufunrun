@@ -342,32 +342,44 @@ Route::get('/guest-dashboard-data', function () {
 
 Route::get('/test-print', function () {
 
-    $fp = fsockopen(
-        '175.143.51.17',
-        9100,
+    $host = '192.168.0.32';
+    $port = 9100;
+
+    $client = @fsockopen(
+        $host,
+        $port,
         $errno,
         $errstr,
         5
     );
 
-    if (!$fp) {
-        return 'Printer gagal connect: ' . $errstr;
+    if (!$client) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Server tak dapat connect printer',
+            'host' => $host,
+            'port' => $port,
+            'error' => $errstr,
+            'errno' => $errno
+        ], 500);
     }
 
     $cmd =
         "SIZE 80 mm,60 mm\r\n" .
         "GAP 2 mm,0 mm\r\n" .
         "CLS\r\n" .
-        'TEXT 100,100,"3",0,1,1,"TEST LARAVEL"' . "\r\n" .
-        'TEXT 100,160,"3",0,1,1,"AHMAD BIN ALI"' . "\r\n" .
-        'TEXT 100,220,"3",0,1,1,"MEJA 25"' . "\r\n" .
+        "TEXT 100,100,\"3\",0,1,1,\"SERVER TEST\"\r\n" .
+        "TEXT 100,160,\"3\",0,1,1,\"EDUFUNRUN\"\r\n" .
         "PRINT 1,1\r\n";
 
-    fwrite($fp, $cmd);
+    fwrite($client, $cmd);
 
-    fclose($fp);
+    fclose($client);
 
-    return 'PRINT LARAVEL DIHANTAR';
+    return response()->json([
+        'success' => true,
+        'message' => 'Print command dihantar'
+    ]);
 });
 
 
@@ -397,7 +409,7 @@ Route::get('/guest-print/{attendance_id}', function ($attendance_id) {
 
 
     $fp = fsockopen(
-        '175.143.51.17',
+        '192.168.0.32',
         9100,
         $errno,
         $errstr,
