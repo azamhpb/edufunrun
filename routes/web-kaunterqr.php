@@ -530,6 +530,7 @@ Route::get('/guest-print/{attendance_id}', function ($attendance_id) {
     */
 
     $nama = strtoupper($guest->nama);
+    $class = strtoupper($guest->class_code ?? '');
     $company = strtoupper($guest->company ?? '');
     $meja = $guest->table_no;
     $scanner = $attendance->scanner_id;
@@ -566,6 +567,10 @@ $printData =
 
     'TEXT 100,330,"2",0,1,1,"' .
     $tarikhMasa .
+    '"' . "\r\n" .
+
+    'TEXT 100,270,"3",0,1,1,"PLATFORM : ' .
+    $class .
     '"' . "\r\n" .
 
     'TEXT 100,360,"2",0,1,1,"SCANNER : ' .
