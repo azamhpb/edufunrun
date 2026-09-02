@@ -19,7 +19,6 @@ use App\Http\Controllers\mejaclassController;
 */
 
 
-
 Route::get('/guest_scanner/{scanner_id}', function ($scanner_id) {
 
     return view(
@@ -28,6 +27,7 @@ Route::get('/guest_scanner/{scanner_id}', function ($scanner_id) {
     );
 
 });
+
 
 Route::post('/guest-scan/{scanner_id}', function (
     Request $request,
@@ -41,7 +41,8 @@ Route::post('/guest-scan/{scanner_id}', function (
         )
         ->first();
 
-    if(!$guest)
+
+    if (!$guest)
     {
 
         DB::table('scan_logs')->insert([
@@ -62,6 +63,7 @@ Route::post('/guest-scan/{scanner_id}', function (
 
         ]);
 
+
         return response()->json([
 
             'success' => false,
@@ -72,6 +74,7 @@ Route::post('/guest-scan/{scanner_id}', function (
 
     }
 
+
     $already = DB::table('guest_attendance')
         ->where(
             'guest_id',
@@ -79,61 +82,63 @@ Route::post('/guest-scan/{scanner_id}', function (
         )
         ->exists();
 
-    if($already)
-{
 
-    $lastScan = DB::table('guest_attendance')
-        ->where(
-            'guest_id',
-            $guest->id
-        )
-        ->orderByDesc('id')
-        ->first();
+    if ($already)
+    {
 
-    DB::table('scan_logs')->insert([
+        $lastScan = DB::table('guest_attendance')
+            ->where(
+                'guest_id',
+                $guest->id
+            )
+            ->orderByDesc('id')
+            ->first();
 
-        'guest_id' => $guest->id,
 
-        'scanner_id' => $scanner_id,
+        DB::table('scan_logs')->insert([
 
-        'qr_token' => $guest->qr_token,
+            'guest_id' => $guest->id,
 
-        'scan_result' => 'DUPLICATE',
+            'scanner_id' => $scanner_id,
 
-        'scan_time' => now('Asia/Kuala_Lumpur'),
+            'qr_token' => $guest->qr_token,
 
-        'created_at' => now('Asia/Kuala_Lumpur'),
+            'scan_result' => 'DUPLICATE',
 
-        'updated_at' => now('Asia/Kuala_Lumpur')
+            'scan_time' => now('Asia/Kuala_Lumpur'),
 
-    ]);
+            'created_at' => now('Asia/Kuala_Lumpur'),
 
-    return response()->json([
+            'updated_at' => now('Asia/Kuala_Lumpur')
 
-        'success' => false,
+        ]);
 
-        'duplicate' => true,
 
-        'message' => 'Sudah Check In',
+        return response()->json([
 
-        'nama' => $guest->nama,
+            'success' => false,
 
-        'company' => $guest->company,
+            'duplicate' => true,
 
-        'class_code' => $guest->class_code,
+            'message' => 'Sudah Check In',
 
-        'table_no' => $guest->table_no,
+            'nama' => $guest->nama,
 
-        'scanner_id' => $lastScan->scanner_id,
+            'company' => $guest->company,
 
-        'scan_time' => date(
-            'd/m/Y h:i:s A',
-            strtotime($lastScan->scan_time)
-        )
+            'table_no' => $guest->table_no,
 
-    ]);
+            'scanner_id' => $lastScan->scanner_id,
 
-}
+            'scan_time' => date(
+                'd/m/Y h:i:s A',
+                strtotime($lastScan->scan_time)
+            )
+
+        ]);
+
+    }
+
 
     DB::table('guest_attendance')->insert([
 
@@ -149,8 +154,12 @@ Route::post('/guest-scan/{scanner_id}', function (
 
     ]);
 
+
     DB::table('guests')
-        ->where('id',$guest->id)
+        ->where(
+            'id',
+            $guest->id
+        )
         ->update([
 
             'checkin_status' => 'checked_in',
@@ -160,6 +169,7 @@ Route::post('/guest-scan/{scanner_id}', function (
             'updated_at' => now('Asia/Kuala_Lumpur')
 
         ]);
+
 
     DB::table('scan_logs')->insert([
 
@@ -180,20 +190,20 @@ Route::post('/guest-scan/{scanner_id}', function (
     ]);
 
 
-    if(
-    str_starts_with($guest->class_code,'DIAMOND')
-    ||
-    str_starts_with($guest->class_code,'PLATINUM')
-)
-{
+    /*
+    |--------------------------------------------------------------------------
+    | Papar Check-in
+    |--------------------------------------------------------------------------
+    */
+
     @file_get_contents(
         url(
-            'guest-checkin/'.
-            $guest->id.'/'.
+            'guest-checkin/' .
+            $guest->id . '/' .
             $scanner_id
         )
     );
-}
+
 
     return response()->json([
 
@@ -202,8 +212,6 @@ Route::post('/guest-scan/{scanner_id}', function (
         'nama' => $guest->nama,
 
         'company' => $guest->company,
-
-        'class_code' => $guest->class_code,
 
         'table_no' => $guest->table_no
 
@@ -221,6 +229,7 @@ Route::get('/guest_screen_tv/{scanner_id}', function ($scanner_id) {
 
 });
 
+
 Route::get('/guest-tv-data/{scanner_id}', function ($scanner_id) {
 
     $attendance = DB::table('guest_attendance')
@@ -231,12 +240,18 @@ Route::get('/guest-tv-data/{scanner_id}', function ($scanner_id) {
         ->orderByDesc('id')
         ->first();
 
-    if(!$attendance)
+
+    if (!$attendance)
     {
+
         return response()->json([
+
             'success' => false
+
         ]);
+
     }
+
 
     $guest = DB::table('guests')
         ->where(
@@ -245,12 +260,18 @@ Route::get('/guest-tv-data/{scanner_id}', function ($scanner_id) {
         )
         ->first();
 
-    if(!$guest)
+
+    if (!$guest)
     {
+
         return response()->json([
+
             'success' => false
+
         ]);
+
     }
+
 
     return response()->json([
 
@@ -261,8 +282,6 @@ Route::get('/guest-tv-data/{scanner_id}', function ($scanner_id) {
         'nama' => $guest->nama,
 
         'company' => $guest->company,
-
-        'class_code' => $guest->class_code,
 
         'table_no' => $guest->table_no
 
@@ -281,17 +300,21 @@ Route::get('/guest_dashboard_tv', function () {
 });
 
 
+
 Route::get('/guest-dashboard-data', function () {
 
     $total = DB::table('guest_attendance')
         ->count();
 
+
     $latest = DB::table('guest_attendance')
         ->orderByDesc('id')
         ->first();
 
-    if(!$latest)
+
+    if (!$latest)
     {
+
         return response()->json([
 
             'total' => $total,
@@ -299,7 +322,9 @@ Route::get('/guest-dashboard-data', function () {
             'latest' => null
 
         ]);
+
     }
+
 
     $guest = DB::table('guests')
         ->where(
@@ -307,6 +332,7 @@ Route::get('/guest-dashboard-data', function () {
             $latest->guest_id
         )
         ->first();
+
 
     return response()->json([
 
@@ -317,8 +343,6 @@ Route::get('/guest-dashboard-data', function () {
             'nama' => $guest->nama,
 
             'company' => $guest->company,
-
-            'class_code' => $guest->class_code,
 
             'table_no' => $guest->table_no,
 
@@ -337,4 +361,3 @@ Route::get('/guest-dashboard-data', function () {
 | Scanner User Interface
 |--------------------------------------------------------------------------
 */
-
