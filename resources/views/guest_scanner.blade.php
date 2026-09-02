@@ -14,7 +14,7 @@
 name="csrf-token"
 content="{{ csrf_token() }}">
 
-<title>Guest Scanner</title>
+<title>Guest Scanner EDU FUN RUN 4.0 2026</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -232,7 +232,7 @@ body{
 
     <div class="title">
 
-        Gala Dinner QR Scanner
+        EDU FUN RUN 4.0 2026 QR Scanner
 
     </div>
 
@@ -277,7 +277,7 @@ body{
 
     <div class="footer">
 
-        Gala Dinner Sabah 2026
+        EDU FUN RUN 4.0 2026
 
     </div>
 
@@ -384,7 +384,7 @@ function onScanSuccess(decodedText)
 
             data.class_code +
 
-            ' | MEJA ' +
+            ' | SIZE BAJU :  ' +
 
             data.table_no;
 
