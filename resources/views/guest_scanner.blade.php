@@ -400,8 +400,16 @@ function onScanSuccess(decodedText)
 
         }
     )
-    .then(response => response.json())
-    .then(data => {
+    .then(response => {
+
+    console.log('HTTP STATUS:', response.status);
+
+    return response.json();
+
+        })
+        .then(data => {
+
+            console.log('SERVER RESPONSE:', data);
 
         if(data.success)
         {
